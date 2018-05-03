@@ -3,6 +3,17 @@
 ## Sobre Zelda 
  TODO: Rellenar datos sobre el juego o los juegos en los que nos basamos (Four Swords y Link to the past). 
  Hay que incluir años de publicación, plataformas, distribuidores y datos interesantes
+ 
+ Vamos a basar nuestro trabajo en The Legend of Zelda, la icónica saga desarrollada y publicada por Nintendo y, más concretamente,
+ en The Legend of Zelda: FourSwords (GBA/2002) y The Legend of Zelda: A Link to the Past (SNES/1991).
+ 
+ The Legend of Zelda daba al jugador el control de Link, un elegido entre los hylianos para rescatar a la Princesa Zelda y salvar
+ el mundo en el proceso de las manos del malvado Ganon. Se trataba de un juego de puzles y aventuras con vista cenital en el que
+ el jugador interactuaba con su entorno mediante el uso de objetos para avanzar por un extenso (para la época) mundo abierto,
+ consiguiendo nuevos objetos y habilidades que le permitían progresar por zonas anteriormente inaccesibles.
+ 
+ Es actualmente una de las sagas más emblemáticas del mundo del videojuego y cuenta con multitud de entregas en distintas plataformas,
+ y sus personajes (Link, Zelda, Ganon...) y objetos (la Trifuerza, la Espada Maestra...) son de sobra conocidos por cualquiera.
 
 ## Recursos
 
