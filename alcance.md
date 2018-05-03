@@ -1,9 +1,6 @@
 # The Legend of Link
 
-## Sobre Zelda 
- TODO: Rellenar datos sobre el juego o los juegos en los que nos basamos (Four Swords y Link to the past). 
- Hay que incluir años de publicación, plataformas, distribuidores y datos interesantes
- 
+## Sobre Zelda  
  Vamos a basar nuestro trabajo en The Legend of Zelda, la icónica saga desarrollada y publicada por Nintendo y, más concretamente,
  en The Legend of Zelda: FourSwords (GBA/2002) y The Legend of Zelda: A Link to the Past (SNES/1991).
  
