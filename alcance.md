@@ -38,6 +38,10 @@
    - Cofres de tesoro.
    - Jefe final.
    
+## Mecánicas a implementar  
+   
+## Puzzles 
+   
 ## Condiciones de finalización
  - Victoria: Eliminas al jefe final.
  - Derrota: Pierdes todas las vidas.
