@@ -19,12 +19,25 @@
  - Los grabamos nosotros
 
 ## Niveles a implementar
- - Pantalla de inicio: Menú inicial con el título del juego y un botón para iniciar partida y otro para los créditos.
- - Casa del protagonista: Es el comienzo de la historia.
- - Pueblo: Tiene NPCs y una tienda en la que comprar pociones.
- - Camino al castillo: Aparecen enemigos aleatorios.
- - Castillo: Tiene enemigos algo más complicados que el camino y algún puzzle. El último nivel es el jefe final
- 
+ - Pantalla de inicio: 
+   - Título del juego.
+   - Botón para iniciar partida.
+   - Botón para la pantalla de créditos.
+ - Casa del protagonista.
+   - Un NPC te introduce en la historia y te explica las mecánicas básicas.
+   - Aquí aparece el protagonista.
+ - Pueblo.
+   - NPCs.
+   - Tienda en la que comprar pociones.
+ - Camino al castillo.
+   - Cofres de tesoro.
+   - Aparecen enemigos aleatorios.
+ - Castillo.
+   - Enemigos.
+   - Puzzles.
+   - Cofres de tesoro.
+   - Jefe final.
+   
 ## Condiciones de finalización
  - Victoria: Eliminas al jefe final.
  - Derrota: Pierdes todas las vidas.
