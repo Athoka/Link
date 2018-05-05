@@ -15,13 +15,33 @@
 ## Recursos
 
 ### Gráficos
- - [Personaje principal](http://spritedatabase.net/file/12012/Purple_Link) 
- - [Tiles para el mapa](https://opengameart.org/content/16xx16-tileset-pokemonzelda-styled)
- - [Objetos](https://opengameart.org/content/16xx16-tileset-pokemonzelda-styled)
- - [Rupias](http://spritedatabase.net/file/12015/Force_Gems)
- - [Cofres](http://spritedatabase.net/file/6052/Treasure_Chest_)
- - [Enemigos](http://spritedatabase.net/file/10843/Enemies)
- - [Jefe final](http://spritedatabase.net/file/12014/Shadow_Link)
+ - Personaje principal  
+   [![personaje](/imagenes/PurpleLink.png)](http://spritedatabase.net/file/12012/Purple_Link)
+   
+ - Tiles para el mapa  
+ 
+   [![tiles](/imagenes/tiles.png)](https://opengameart.org/content/16xx16-tileset-pokemonzelda-styled)
+   
+ - Objetos  
+ 
+   [![objetos](/imagenes/items.png)](https://www.spriters-resource.com/custom_edited/thelegendofzeldacustoms/sheet/66258/)
+   
+ - Rupias  
+ 
+   [![rupias](/imagenes/rupias.png)](http://spritedatabase.net/file/12015/Force_Gems)
+   
+ - Cofres  
+ 
+   [![cofres](/imagenes/treasurechest.png)](http://spritedatabase.net/file/6052/Treasure_Chest_)
+   
+ - Enemigos  
+ 
+   [![enemigos](/imagenes/enemies.png)](http://spritedatabase.net/file/10843/Enemies)
+   
+ - Jefe final  
+ 
+   [![final boss](/imagenes/ShadowLink.png)](http://spritedatabase.net/file/12014/Shadow_Link)
+   
 
 ### Sonidos
  - Los grabamos nosotros
@@ -46,9 +66,16 @@
    - Cofres de tesoro.
    - Jefe final.
    
-## Mecánicas a implementar  
+## Mecánicas a implementar
    
 ## Puzzles 
+ - Puzzle 1
+ 
+ ![Puzzle1](/imagenes/puzzle1.jpg)
+ 
+ - Puzzle 2
+ 
+ ![Puzzle2](/imagenes/puzzle2.jpg)
    
 ## Condiciones de finalización
  - Victoria: Eliminas al jefe final.
