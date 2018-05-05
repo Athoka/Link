@@ -16,6 +16,7 @@
 
 ### Gráficos
  - Personaje principal  
+ 
    [![personaje](/imagenes/PurpleLink.png)](http://spritedatabase.net/file/12012/Purple_Link)
    
  - Tiles para el mapa  
