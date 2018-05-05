@@ -68,6 +68,15 @@
    - Jefe final.
    
 ## Mecánicas a implementar
+ - Movimiento: Link puede moverse libremente por el escenario.
+ - Combate: Link puede utilizar su espada para atacar en la dirección en la que esté mirando.
+ - Objetos: Link puede utilizar objetos como pociones para recuperar salud.
+ - Salud: Link y los enemigos tienen cierto número de "puntos de impacto" que pueden soportar antes de morir.
+ - Vidas: Link puede morir un número limitado de veces. Si excede este número, se acaba el juego.
+ - Interacción con escenario: Link puede interactuar con ciertos objetos para obtener información sobre el mundo, leer carteles, etc.
+ - Interacción con NPCs: Link puede interactuar con NPCs para hablar con ellos, de forma similar a la interacción con el mundo.
+ - Inventario: Menú que permite ver qué objetos tiene Link en ese momento, equiparlos y desequiparlos.
+ - Interfaz: Indicadores de salud, objeto equipado, etc.
    
 ## Puzzles 
  - Puzzle 1
