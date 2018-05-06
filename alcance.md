@@ -1,4 +1,9 @@
 # The Legend of Link
+## Integrantes
+- David Antuña
+- Jaime Bas
+- Irene González
+- José Luis Moreno
 
 ## Sobre Zelda
 
