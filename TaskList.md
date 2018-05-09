@@ -1,0 +1,10 @@
+- Investigar vista cenital - Antuña (1)
+- Mapas (2) -> Castillo por dentro
+            -> 1 o 2 mapas que vayan del inicio al castillo (opcional)
+            -> Casa de inicio (opcional)
+- Diálogos (5)
+- Sonidos (5)
+- Sprites (2)
+- Ajustar tiles (1) -> Castillo (Irene)
+                    -> Link (Jaime)
+                    -> Enemigos (Jose)
