@@ -1,23 +1,7 @@
 {
-  "walk_up": {
-    "sx": 0,
-    "sy": 0,
+  "walk": {
     "tileW": 24,
     "tileH": 28,
-    "frames": 6
-  },
-  "walk_down": {
-    "sx": 24,
-    "sy": 0,
-    "tileW": 24,
-    "tileH": 28,
-    "frames": 6
-  },
-  "walk_side": {
-    "sx": 48,
-    "sy": 0,
-    "tileW": 24,
-    "tileH": 28,
-    "frames": 6
+    "frames": 18
   }
 }
