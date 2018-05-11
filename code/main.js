@@ -3,8 +3,8 @@ const game = function () {
   const Q = (window.Q = Quintus()
     .include('Sprites, Scenes, Input, UI, Touch, TMX, Anim, 2D, Audio')
     .setup({
-      width: 320,
-      height: 480,
+      width: 512,
+      height: 512,
     })
     .controls()
     .touch());
@@ -60,14 +60,14 @@ const game = function () {
 
   ////////// Load TMX level //////////
   Q.scene('test', function (stage) {
-    Q.stageTMX('prueba2.tmx', stage);
+    Q.stageTMX('Castle_Room_Final.tmx', stage);
   });
 
   Q.load(
     'walk.png, walk.json',
     function () {
       Q.compileSheets('walk.png', 'walk.json');
-      Q.loadTMX('prueba2.tmx', function () {
+      Q.loadTMX('Castle_Room_Final.tmx', function () {
         Q.stageScene('test');
       });
     }
