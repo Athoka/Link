@@ -11,4 +11,5 @@ chests -> 16x16
 
 big_chest -> 32x38
 
+medium_rupias -> 20x20
 big_rupias -> 36x36
