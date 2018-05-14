@@ -10,3 +10,5 @@ tektite -> 28x26
 chests -> 16x16
 
 big_chest -> 32x38
+
+big_rupias -> 36x36
