@@ -1,7 +1,7 @@
 {
   "walk": {
-    "tileW": 24,
-    "tileH": 28,
+    "tileW": 35,
+    "tileH": 41,
     "frames": 18
   }
 }
