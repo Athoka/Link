@@ -1,9 +1,8 @@
-           #Sprites' sizes
+# Sprites' sizes
            
            
            Height x Width
-sword_attack -> 35x41
-walk -> 24x28
+purple_link -> 35x41
 Shadow Link is the same size
 
 darknut -> 37x44
