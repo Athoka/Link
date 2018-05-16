@@ -90,14 +90,14 @@ const game = function() {
 
   ////////// Load TMX level //////////
   Q.scene('test', function(stage) {
-    Q.stageTMX('Castle_Room_1.tmx', stage);
+    Q.stageTMX('Castle_Room2.tmx', stage);
 
     const player = stage.insert(new Q.Player({ x: 300, y: 300 }));
   });
 
   Q.load('walk.png, walk.json', function() {
     Q.compileSheets('walk.png', 'walk.json');
-    Q.loadTMX('Castle_Room_1.tmx', function() {
+    Q.loadTMX('Castle_Room2.tmx', function() {
       Q.stageScene('test');
     });
   });
