@@ -1,3 +1,4 @@
+            Height x Width
 sword_attack -> 35x41
 walk -> 24x28
 Shadow Link is the same size
@@ -11,7 +12,6 @@ chests -> 16x16
 
 big_chest -> 32x38
 
-           Height x Width
 small_rupias -> 12x11
 medium_rupias -> 20x20
 big_rupias -> 36x36
