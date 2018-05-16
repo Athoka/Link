@@ -62,14 +62,14 @@ const game = function() {
   });
 
   Q.animations('link', {
-    walk_up: { frames: [0, 1, 2, 3, 4], rate: 1 / 15 },
-    walk_left: { frames: [5, 6, 7, 8, 9], rate: 1 / 15 },
-    walk_right: { frames: [5, 6, 7, 8, 9], rate: 1 / 15 },
-    walk_down: { frames: [10, 11, 12, 13, 14], rate: 1 / 15 },
+    walk_up: { frames: [0, 1, 2, 3, 4, 5], rate: 1 / 15 },
+    walk_left: { frames: [10, 11, 12, 13, 14, 15], rate: 1 / 15 },
+    walk_right: { frames: [10, 11, 12, 13, 14, 15], rate: 1 / 15 },
+    walk_down: { frames: [20, 21, 22, 23, 24, 25], rate: 1 / 15 },
     stand_up: { frames: [0], rate: 1 / 5 },
-    stand_left: { frames: [5], rate: 1 / 5 },
-    stand_right: { frames: [5], rate: 1 / 5 },
-    stand_down: { frames: [11], rate: 1 / 5 },
+    stand_left: { frames: [10], rate: 1 / 5 },
+    stand_right: { frames: [10], rate: 1 / 5 },
+    stand_down: { frames: [20], rate: 1 / 5 },
   });
 
   ////////// ENEMIES //////////
@@ -95,8 +95,8 @@ const game = function() {
     const player = stage.insert(new Q.Player({ x: 300, y: 300 }));
   });
 
-  Q.load('walk.png, walk.json', function() {
-    Q.compileSheets('walk.png', 'walk.json');
+  Q.load('purple_link.png, walk.json', function() {
+    Q.compileSheets('purple_link.png', 'walk.json');
     Q.loadTMX('Castle_Room2.tmx', function() {
       Q.stageScene('test');
     });
