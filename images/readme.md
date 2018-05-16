@@ -3,8 +3,7 @@ sword_attack -> 35x41
 walk -> 24x28
 Shadow Link is the same size
 
-darknut_attack -> 37x44
-darknut_walk -> 24x30
+darknut -> 37x44
 
 tektite -> 28x26
 
