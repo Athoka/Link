@@ -3,6 +3,7 @@
            
            Height x Width
 purple_link -> 35x41
+
 Shadow Link is the same size
 
 darknut -> 37x44
