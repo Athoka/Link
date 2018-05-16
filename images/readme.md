@@ -1,4 +1,7 @@
-            Height x Width
+           #Sprites' sizes
+           
+           
+           Height x Width
 sword_attack -> 35x41
 walk -> 24x28
 Shadow Link is the same size
