@@ -14,7 +14,7 @@ const game = function() {
     init: function(p) {
       this._super(p, {
         sprite: 'link',
-        sheet: 'walk',
+        sheet: 'purple_link',
         direction: 'up',
         health: 3,
         stepDistance: 16,
