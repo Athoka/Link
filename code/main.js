@@ -62,10 +62,10 @@ const game = function() {
   });
 
   Q.animations('link', {
-    walk_up: { frames: [0, 1, 2, 3, 4, 5, 6], rate: 1 / 15 },
-    walk_left: { frames: [11, 12, 13, 14, 15, 16, 17], rate: 1 / 15 },
-    walk_right: { frames: [11, 12, 13, 14, 15, 16, 17], rate: 1 / 15 },
-    walk_down: { frames: [22, 23, 24, 25, 26, 27 , 28], rate: 1 / 15 },
+    walk_up: { frames: [1, 2, 3, 4, 5, 6], rate: 1 / 15 },
+    walk_left: { frames: [12, 13, 14, 15, 16, 17], rate: 1 / 15 },
+    walk_right: { frames: [12, 13, 14, 15, 16, 17], rate: 1 / 15 },
+    walk_down: { frames: [23, 24, 25, 26, 27 , 28], rate: 1 / 15 },
     stand_up: { frames: [0], rate: 1 / 5 },
     stand_left: { frames: [11], rate: 1 / 5 },
     stand_right: { frames: [11], rate: 1 / 5 },
