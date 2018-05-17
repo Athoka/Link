@@ -1,7 +1,7 @@
 # Sprites' sizes
-           
-           
-           Height x Width
+
+          Height x Width
+
 purple_link -> 35x41
 
 Shadow Link is the same size

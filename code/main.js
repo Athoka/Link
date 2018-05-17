@@ -13,7 +13,7 @@ const game = function() {
   Q.Sprite.extend('Player', {
     init: function(p) {
       this._super(p, {
-        sprite: 'link',
+        sprite: 'purple_link',
         sheet: 'purple_link',
         direction: 'up',
         health: 3,
@@ -48,8 +48,10 @@ const game = function() {
 
       if (this.p.stepping && this.p.health > 0) {
         this.play('walk_' + this.p.direction);
-      } else {
+      } else if (this.p.health > 0) {
         this.play('stand_' + this.p.direction);
+      } else {
+        this.destroy();
       }
     },
 
@@ -61,7 +63,7 @@ const game = function() {
     },
   });
 
-  Q.animations('link', {
+  Q.animations('purple_link', {
     walk_up: { frames: [1, 2, 3, 4, 5, 6], rate: 1 / 15 },
     walk_left: { frames: [12, 13, 14, 15, 16, 17], rate: 1 / 15 },
     walk_right: { frames: [12, 13, 14, 15, 16, 17], rate: 1 / 15 },
@@ -74,31 +76,47 @@ const game = function() {
 
   ////////// ENEMIES //////////
 
-  //// Default component ////
-  Q.component('defaultEnemy', {
-    added: function() {
-      this.entity.on('bump.left,bump.right,bump.bottom,bump.top', function(
-        collision
-      ) {
-        if (collision.obj.isA('Player')) {
-          collision.obj.hit(1);
-          console.log('whops');
-        }
+  Q.Sprite.extend('Darknut', {
+    init: function(p) {
+      this._super(p, {
+        sheet: 'darknut',
+        sprite: 'darknut',
+        gravity: 0,
+        tile_size: 16,
+        damage: 0,
       });
+
+      this.add('2d, aiTrack, animation');
+    },
+
+    step: function(dt) {
+      if (this.p.attacking) {
+        // TODO add darknut attack animations
+        console.log('die!');
+        this.p.attacking = false;
+      }
+      // TODO add darknut movement animations
     },
   });
 
   ////////// Load TMX level //////////
   Q.scene('test', function(stage) {
-    Q.stageTMX('Castle_Room2.tmx', stage);
+    Q.stageTMX('Castle_Room1.tmx', stage);
 
-    const player = stage.insert(new Q.Player({ x: 300, y: 300 }));
+    const player = stage.insert(new Q.Player({ x: 300, y: 400 }));
+    stage.insert(
+      new Q.Darknut({ x: 400, y: 300, vfactor: 3, attack_range: 0 })
+    );
   });
 
-  Q.load('purple_link.png, walk.json', function() {
-    Q.compileSheets('purple_link.png', 'walk.json');
-    Q.loadTMX('Castle_Room2.tmx', function() {
-      Q.stageScene('test');
-    });
-  });
+  Q.load(
+    'purple_link.png, purple_link.json, darknut.png, darknut.json',
+    function() {
+      Q.compileSheets('purple_link.png', 'purple_link.json');
+      Q.compileSheets('darknut.png', 'darknut.json');
+      Q.loadTMX('Castle_Room1.tmx', function() {
+        Q.stageScene('test');
+      });
+    }
+  );
 };
