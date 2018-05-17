@@ -99,6 +99,47 @@ const game = function() {
     },
   });
 
+
+  ////////// TREASURE CHEST //////////
+
+  Q.Sprite.extend('BigChest', {
+    init: function(p) {
+      this._super(p, {
+         sheet: 'big_chest', 
+         sprite: 'big_chest',
+         frame: 0, 
+         gravity: 0,
+         open: false,
+         opening: false
+      });
+      this.add('animation');
+    }, 
+
+    step: function(dt) {
+      if(this.p.opening) {
+        this.play('open');
+        this.p.opening = false;
+      } 
+      if(this.p.open) {
+        frame = 3;
+      } else {
+        frame = 0;
+      }
+    }, 
+
+    hit: function() {
+      if(!open) {
+        open = true;
+        opening = true;
+      }
+    } 
+  });
+
+  Q.animations('big_chest', {
+    open: {frames: [2, 3, 4], rate: 1/5, loop: false}
+  });
+
+
   ////////// Load TMX level //////////
   Q.scene('test', function(stage) {
     Q.stageTMX('Castle_Room1.tmx', stage);
@@ -107,13 +148,15 @@ const game = function() {
     stage.insert(
       new Q.Darknut({ x: 400, y: 300, vfactor: 3, attack_range: 0 })
     );
+    stage.insert(new Q.BigChest({x: 200, y:300}));
   });
 
   Q.load(
-    'purple_link.png, purple_link.json, darknut.png, darknut.json',
+    'purple_link.png, purple_link.json, darknut.png, darknut.json, big_chest.json, big_chest.png',
     function() {
       Q.compileSheets('purple_link.png', 'purple_link.json');
       Q.compileSheets('darknut.png', 'darknut.json');
+      Q.compileSheets('big_chest.png', 'big_chest.json');
       Q.loadTMX('Castle_Room1.tmx', function() {
         Q.stageScene('test');
       });
