@@ -77,26 +77,64 @@ const game = function() {
   ////////// ENEMIES //////////
 
   Q.Sprite.extend('Darknut', {
-    init: function(p) {
+    init: function (p) {
       this._super(p, {
         sheet: 'darknut',
         sprite: 'darknut',
         gravity: 0,
+        direction: 'down',
         tile_size: 16,
-        damage: 0,
+        damage: 1,
       });
 
       this.add('2d, aiTrack, animation');
     },
 
-    step: function(dt) {
-      if (this.p.attacking) {
-        // TODO add darknut attack animations
-        console.log('die!');
-        this.p.attacking = false;
+    step: function (dt) {
+      if (this.p.vy > 0) {
+        this.p.direction = 'down';
+      } else if (this.p.vy < 0) {
+        this.p.direction = 'up';
       }
-      // TODO add darknut movement animations
+      if (Math.abs(this.p.vx) > Math.abs(this.p.vy)) {
+        if (this.p.vx > 0) {
+          this.p.direction = 'right';
+        } else if (this.p.vx < 0) {
+          this.p.direction = 'left';
+        }
+      }
+
+      if (this.p.direction === 'left') {
+        this.p.flip = 'x';
+      } else {
+        this.p.flip = '';
+      }
+
+      if (this.p.attacking) {
+        this.play('attack_' + this.p.direction);
+        this.p.attacking = false;
+      } else if (this.p.tracking) {
+        this.play('walk_' + this.p.direction);
+        this.p.tracking = false;
+      } else {
+        this.play('stand_' + this.p.direction);
+      }
     },
+  });
+
+  Q.animations('darknut', {
+    walk_up: { frames: [0, 1, 2], rate: 1 / 1 },
+    walk_left: { frames: [6, 7, 8], rate: 1 / 5 },
+    walk_right: { frames: [6, 7, 8], rate: 1 / 5 },
+    walk_down: { frames: [12, 13, 14], rate: 1 / 5 },
+    stand_up: { frames: [0], rate: 1 / 5 },
+    stand_left: { frames: [6], rate: 1 / 5 },
+    stand_right: { frames: [6], rate: 1 / 5 },
+    stand_down: { frames: [12], rate: 1 / 5 },
+    attack_up: { frames: [3, 4, 5], rate: 1 / 15, next: 'stand_up' },
+    attack_left: { frames: [9, 10, 11], rate: 1 / 15, next: 'stand_left' },
+    attack_right: { frames: [9, 10, 11], rate: 1 / 15, next: 'stand_right' },
+    attack_down: { frames: [15, 16, 17], rate: 1 / 15, next: 'stand_down' },
   });
 
 
