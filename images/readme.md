@@ -18,4 +18,4 @@ small_rupias -> 12x11
 medium_rupias -> 20x20
 big_rupias -> 36x36
 
-Life -> 57x154
+Life -> 57x52
