@@ -1,4 +1,4 @@
-const game = function () {
+const game = function() {
   ////////// Load Quintus object //////////
   const Q = (window.Q = Quintus()
     .include('Sprites, Scenes, Input, UI, Touch, TMX, Anim, 2D, Audio')
@@ -11,7 +11,7 @@ const game = function () {
 
   ////////// Player Sprite //////////
   Q.Sprite.extend('Player', {
-    init: function (p) {
+    init: function(p) {
       this._super(p, {
         sprite: 'purple_link',
         sheet: 'purple_link',
@@ -24,12 +24,12 @@ const game = function () {
         range: 3,
         tile_size: 16,
         attacking: false,
-        points: [[-4, -4], [-4, 4], [4, 4], [4, -4]]
+        points: [[-4, -4], [-4, 4], [4, 4], [4, -4]],
       });
 
       this.add('2d, stepControls, animation');
 
-      this.on('hit.sprite', function (collision) {
+      this.on('hit.sprite', function(collision) {
         //TODO
       });
 
@@ -37,8 +37,7 @@ const game = function () {
       Q.input.on('action', this, 'interact');
     },
 
-
-    step: function (dt) {
+    step: function(dt) {
       dirs = ['up', 'down', 'left', 'right'];
       if (!Q.inputs[this.p.direction]) {
         for (d in dirs) {
@@ -58,8 +57,7 @@ const game = function () {
       if (this.p.attacking && this.p.health > 0) {
         this.play('attack_' + this.p.direction);
         this.p.attacking = false;
-      }
-      else if (this.p.stepping && this.p.health > 0) {
+      } else if (this.p.stepping && this.p.health > 0) {
         this.play('walk_' + this.p.direction);
       } else if (this.p.health > 0) {
         this.play('stand_' + this.p.direction);
@@ -68,45 +66,63 @@ const game = function () {
       }
     },
 
-    hit: function (dmg) {
+    hit: function(dmg) {
       this.p.health -= dmg;
       if (this.p.health <= 0) {
         this.p.dead = true;
       }
     },
 
-    attack: function () {
+    attack: function() {
       const p = this.p;
       p.attacking = true;
-      sprites = Q.stage().getSprites()
+      sprites = Q.stage().getSprites();
       for (i in sprites) {
         const other = sprites[i].p;
-        if (!sprites[i].isA['Player'] && (
-          (p.direction === 'down' && other.y > p.y && other.y < p.y + p.range * p.tile_size) ||
-          (p.direction === 'up' && other.y < p.y && other.y > p.y - p.range * p.tile_size) ||
-          (p.direction === 'left' && other.x < p.x && other.x > p.x - p.range * p.tile_size) ||
-          (p.direction === 'right' && other.x > p.x && other.x < p.x + p.range * p.tile_size)
-        )) {
-          sprites[i].hit(this.p.damage);
+        if (
+          !sprites[i].isA['Player'] &&
+          ((p.direction === 'down' &&
+            other.y > p.y &&
+            other.y < p.y + p.range * p.tile_size) ||
+            (p.direction === 'up' &&
+              other.y < p.y &&
+              other.y > p.y - p.range * p.tile_size) ||
+            (p.direction === 'left' &&
+              other.x < p.x &&
+              other.x > p.x - p.range * p.tile_size) ||
+            (p.direction === 'right' &&
+              other.x > p.x &&
+              other.x < p.x + p.range * p.tile_size))
+        ) {
+          if (sprites[i].hit) sprites[i].hit(this.p.damage);
         }
       }
     },
 
-    interact: function () {
+    interact: function() {
       const p = this.p;
       sprites = Q.stage().getSprites();
       for (i in sprites) {
         const other = sprites[i].p;
-        if (!sprites[i].isA['Player'] && (
-          (p.direction === 'down' && other.y > p.y && other.y < p.y + p.range * p.tile_size) ||
-          (p.direction === 'up' && other.y < p.y && other.y > p.y - p.range * p.tile_size) ||
-          (p.direction === 'left' && other.x < p.x && other.x > p.x - p.range * p.tile_size) ||
-          (p.direction === 'right' && other.x > p.x && other.x < p.x + p.range * p.tile_size)
-        )) {
-          sprites[i].interact();
+        if (
+          !sprites[i].isA['Player'] &&
+          ((p.direction === 'down' &&
+            other.y > p.y &&
+            other.y < p.y + p.range * p.tile_size) ||
+            (p.direction === 'up' &&
+              other.y < p.y &&
+              other.y > p.y - p.range * p.tile_size) ||
+            (p.direction === 'left' &&
+              other.x < p.x &&
+              other.x > p.x - p.range * p.tile_size) ||
+            (p.direction === 'right' &&
+              other.x > p.x &&
+              other.x < p.x + p.range * p.tile_size))
+        ) {
+          if (sprites[i].interact) sprites[i].interact();
         }
       }
-    }
+    },
   });
 
   Q.animations('purple_link', {
@@ -127,27 +143,26 @@ const game = function () {
   ////////// ENEMIES //////////
 
   Q.Sprite.extend('Darknut', {
-    init: function (p) {
+    init: function(p) {
       this._super(p, {
         sheet: 'darknut',
         sprite: 'darknut',
         gravity: 0,
         direction: 'down',
         tile_size: 16,
-        damage: 1,
+        damage: 0,
         health: 3,
         death: false,
       });
 
-      this.on('attack.done', function (collision) {
+      this.on('attack.done', function(collision) {
         this.p.attacking = false;
       });
 
       this.add('2d, aiTrack, animation');
     },
 
-
-    step: function (dt) {
+    step: function(dt) {
       if (this.p.vy > 0) {
         this.p.direction = 'down';
       } else if (this.p.vy < 0) {
@@ -179,14 +194,12 @@ const game = function () {
       }
     },
 
-    hit: function (dmg) {
+    hit: function(dmg) {
       this.p.health -= dmg;
       if (this.p.health <= 0) {
         death = true;
       }
     },
-
-    interact: function () { }
   });
 
   Q.animations('darknut', {
@@ -198,17 +211,36 @@ const game = function () {
     stand_left: { frames: [6], rate: 1 / 5 },
     stand_right: { frames: [6], rate: 1 / 5 },
     stand_down: { frames: [12], rate: 1 / 5 },
-    attack_up: { frames: [3, 4, 5], rate: 1 / 10, next: 'stand_up', trigger: 'attack.done' },
-    attack_left: { frames: [9, 10, 11], rate: 1 / 10, next: 'stand_left', trigger: 'attack.done' },
-    attack_right: { frames: [9, 10, 11], rate: 1 / 10, next: 'stand_right', trigger: 'attack.done' },
-    attack_down: { frames: [15, 16, 17], rate: 1 / 10, next: 'stand_down', trigger: 'attack.done' },
+    attack_up: {
+      frames: [3, 4, 5],
+      rate: 1 / 10,
+      next: 'stand_up',
+      trigger: 'attack.done',
+    },
+    attack_left: {
+      frames: [9, 10, 11],
+      rate: 1 / 10,
+      next: 'stand_left',
+      trigger: 'attack.done',
+    },
+    attack_right: {
+      frames: [9, 10, 11],
+      rate: 1 / 10,
+      next: 'stand_right',
+      trigger: 'attack.done',
+    },
+    attack_down: {
+      frames: [15, 16, 17],
+      rate: 1 / 10,
+      next: 'stand_down',
+      trigger: 'attack.done',
+    },
   });
-
 
   ////////// TREASURE CHEST //////////
 
   Q.Sprite.extend('BigChest', {
-    init: function (p) {
+    init: function(p) {
       this._super(p, {
         sheet: 'big_chest',
         sprite: 'big_chest',
@@ -216,12 +248,12 @@ const game = function () {
         gravity: 0,
         open: false,
         opening: false,
-        reward: 'big_rupee'
+        reward: 'big_rupee',
       });
       this.add('animation');
     },
 
-    step: function (dt) {
+    step: function(dt) {
       if (this.p.opening) {
         this.play('open');
         this.p.opening = false;
@@ -233,7 +265,7 @@ const game = function () {
       }
     },
 
-    interact: function () {
+    interact: function() {
       if (!this.p.open) {
         this.p.open = true;
         this.p.opening = true;
@@ -244,33 +276,30 @@ const game = function () {
         Q.stage().insert(item);
       }
     },
-
-    hit: function () { }
   });
 
   Q.animations('big_chest', {
-    open: { frames: [1, 2, 3], rate: 1 / 5, loop: false }
+    open: { frames: [1, 2, 3], rate: 1 / 5, loop: false },
   });
-
 
   ////////// Items //////////
   Q.Sprite.extend('BigRupee', {
-    init: function (p) {
+    init: function(p) {
       this._super(p, {
         sheet: 'big_rupee',
         frame: 0,
         sprite: 'big_rupee',
         gravity: 0,
         sensor: true,
-        scale: 0.5
+        scale: 0.5,
       });
 
       this.add('tween, animation');
     },
-    step: function (p) {
+    step: function(p) {
       this.play('color');
       this.animate({ y: this.p.y - 30 }, 1, Q.Easing.Linear, {
-        callback: function () {
+        callback: function() {
           this.destroy();
         },
       });
@@ -280,33 +309,28 @@ const game = function () {
   Q.animations('big_rupee', {
     color: {
       frames: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15],
-      loop: true, rate: 1 / 5
+      loop: true,
+      rate: 1 / 5,
     },
   });
-
 
   ////////// Invisible barrier //////////
   Q.Sprite.extend('InvisibleBarrier', {
-    init: function (p) {
+    init: function(p) {
       this._super(p, {
-        asset: 'inv',
+        asset: 'inv_colored.png',
         gravity: 0,
       });
 
-      this.on('hit.sprite', function (collision) {
-        console.log('ouch');
+      this.on('hit.sprite', function(collision) {
+        if (!collision.obj.isA('Player')) return;
         Q.stageScene(this.p.scene);
       });
-
-      this.add('2d');
     },
-
-
   });
 
-
   ////////// Load TMX level //////////
-  Q.scene('test', function (stage) {
+  Q.scene('Room1', function(stage) {
     Q.stageTMX('Castle_Room1.tmx', stage);
 
     const player = stage.insert(new Q.Player({ x: 300, y: 400 }));
@@ -314,26 +338,41 @@ const game = function () {
       new Q.Darknut({ x: 400, y: 300, vfactor: 3, attack_range: 0 })
     );
     stage.insert(new Q.BigChest({ x: 200, y: 300 }));
-    stage.insert(new Q.InvisibleBarrier({ x: 300, y: 450, scene: 'test2' }));
+
+    for (let i = 0; i < 5; i += 1) {
+      stage.insert(
+        new Q.InvisibleBarrier({ x: 296 - i * 16, y: 510, scene: 'Room2' })
+      );
+    }
   });
 
-  Q.scene('test2', function (stage) {
+  Q.scene('Room2', function(stage) {
     Q.stageTMX('Castle_Room2.tmx', stage);
 
     const player = stage.insert(new Q.Player({ x: 300, y: 400 }));
     stage.insert(new Q.BigChest({ x: 200, y: 300 }));
+
+    for (let i = 0; i < 4; i += 1) {
+      stage.insert(
+        new Q.InvisibleBarrier({ x: 510, y: 296 - i * 16, scene: 'Room1' })
+      );
+    }
+
+    // for testing only
+    stage.insert(new Q.InvisibleBarrier({ x: 200, y: 280, scene: 'Room1' }));
   });
 
   Q.load(
     'purple_link.png, purple_link.json, darknut.png, darknut.json, \
-    big_chest.json, big_chest.png, big_rupee.json, big_rupee.png',
-    function () {
+    big_chest.json, big_chest.png, big_rupee.json, big_rupee.png, \
+    inv.png, inv_colored.png',
+    function() {
       Q.compileSheets('purple_link.png', 'purple_link.json');
       Q.compileSheets('darknut.png', 'darknut.json');
       Q.compileSheets('big_chest.png', 'big_chest.json');
       Q.compileSheets('big_rupee.png', 'big_rupee.json');
-      Q.loadTMX('Castle_Room1.tmx, Castle_Room2.tmx', function () {
-        Q.stageScene('test');
+      Q.loadTMX('Castle_Room1.tmx, Castle_Room2.tmx', function() {
+        Q.stageScene('Room1');
       });
     }
   );
