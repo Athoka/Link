@@ -20,6 +20,7 @@ const game = function() {
         stepDistance: 16,
         stepDelay: 0.2,
         gravity: 0,
+        damage: 1,
       });
 
       this.add('2d, stepControls, animation');
@@ -27,6 +28,8 @@ const game = function() {
       this.on('hit.sprite', function(collision) {
         //TODO
       });
+
+      Q.input.on('action', this, 'attack');
     },
 
     step: function(dt) {
@@ -40,6 +43,7 @@ const game = function() {
         }
       }
 
+      
       if (this.p.direction == 'right') {
         this.p.flip = 'x';
       } else {
@@ -60,6 +64,10 @@ const game = function() {
       if (this.p.health <= 0) {
         this.p.dead = true;
       }
+    },
+
+    attack: function(obj) {
+      obj.hit(this.p.damage);
     },
   });
 
@@ -84,7 +92,9 @@ const game = function() {
         gravity: 0,
         direction: 'down',
         tile_size: 16,
-        damage: 1,
+        damage: 0,
+        health: 3,
+        death: false,
       });
 
       this.add('2d, aiTrack, animation');
@@ -113,13 +123,23 @@ const game = function() {
       if (this.p.attacking) {
         this.play('attack_' + this.p.direction);
         this.p.attacking = false;
-      } else if (this.p.tracking) {
-        this.play('walk_' + this.p.direction);
+      } else if (this.p.tracking ) {
+        //this.play('walk_' + this.p.direction);
         this.p.tracking = false;
+      } else if (this.p.health > 0){
+       // this.play('stand_' + this.p.direction);
+       console.log("Holi :)");
       } else {
-        this.play('stand_' + this.p.direction);
+        this.destroy();
       }
     },
+
+    hit: function(dmg) {
+      this.p.health -=dmg;
+      if(this.p.health <= 0) {
+        death = true;
+      }
+    }
   });
 
   Q.animations('darknut', {
@@ -131,10 +151,10 @@ const game = function() {
     stand_left: { frames: [6], rate: 1 / 5 },
     stand_right: { frames: [6], rate: 1 / 5 },
     stand_down: { frames: [12], rate: 1 / 5 },
-    attack_up: { frames: [3, 4, 5], rate: 1 / 15, next: 'stand_up' },
-    attack_left: { frames: [9, 10, 11], rate: 1 / 15, next: 'stand_left' },
-    attack_right: { frames: [9, 10, 11], rate: 1 / 15, next: 'stand_right' },
-    attack_down: { frames: [15, 16, 17], rate: 1 / 15, next: 'stand_down' },
+    attack_up: { frames: [3, 4, 5], rate: 1 / 10, next: 'stand_up' },
+    attack_left: { frames: [9, 10, 11], rate: 1 / 10, next: 'stand_left' },
+    attack_right: { frames: [9, 10, 11], rate: 1 / 10, next: 'stand_right' },
+    attack_down: { frames: [15, 16, 17], rate: 1 / 10, next: 'stand_down' },
   });
 
 
