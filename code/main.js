@@ -29,10 +29,6 @@ const game = function() {
 
       this.add('2d, stepControls, animation');
 
-      this.on('hit.sprite', function(collision) {
-        //TODO
-      });
-
       Q.input.on('fire', this, 'attack');
       Q.input.on('action', this, 'interact');
     },
@@ -76,23 +72,14 @@ const game = function() {
     attack: function() {
       const p = this.p;
       p.attacking = true;
-      sprites = Q.stage().getSprites();
+      sprites = Q.stage(Q.stages.length - 1).getSprites();
       for (i in sprites) {
         const other = sprites[i].p;
+        col = { x: p.x - other.x, y: p.y - other.y };
         if (
-          !sprites[i].isA['Player'] &&
-          ((p.direction === 'down' &&
-            other.y > p.y &&
-            other.y < p.y + p.range * p.tile_size) ||
-            (p.direction === 'up' &&
-              other.y < p.y &&
-              other.y > p.y - p.range * p.tile_size) ||
-            (p.direction === 'left' &&
-              other.x < p.x &&
-              other.x > p.x - p.range * p.tile_size) ||
-            (p.direction === 'right' &&
-              other.x > p.x &&
-              other.x < p.x + p.range * p.tile_size))
+          !sprites[i].isA('Player') &&
+          Math.abs(col.x) < p.range * p.tile_size &&
+          Math.abs(col.y) < p.range * p.tile_size
         ) {
           if (sprites[i].hit) sprites[i].hit(this.p.damage);
         }
@@ -101,23 +88,15 @@ const game = function() {
 
     interact: function() {
       const p = this.p;
-      sprites = Q.stage().getSprites();
+      c = Q.stage(Q.stages.length - 1).collide(this);
+      sprites = Q.stage(Q.stages.length - 1).getSprites();
       for (i in sprites) {
         const other = sprites[i].p;
+        col = { x: p.x - other.x, y: p.y - other.y };
         if (
-          !sprites[i].isA['Player'] &&
-          ((p.direction === 'down' &&
-            other.y > p.y &&
-            other.y < p.y + p.range * p.tile_size) ||
-            (p.direction === 'up' &&
-              other.y < p.y &&
-              other.y > p.y - p.range * p.tile_size) ||
-            (p.direction === 'left' &&
-              other.x < p.x &&
-              other.x > p.x - p.range * p.tile_size) ||
-            (p.direction === 'right' &&
-              other.x > p.x &&
-              other.x < p.x + p.range * p.tile_size))
+          !sprites[i].isA('Player') &&
+          Math.abs(col.x) < p.range * p.tile_size &&
+          Math.abs(col.y) < p.range * p.tile_size
         ) {
           if (sprites[i].interact) sprites[i].interact();
         }
@@ -187,17 +166,15 @@ const game = function() {
       } else if (this.p.tracking) {
         this.play('walk_' + this.p.direction);
         this.p.tracking = false;
-      } else if (this.p.health > 0) {
-        this.play('stand_' + this.p.direction);
       } else {
-        this.destroy();
+        this.play('stand_' + this.p.direction);
       }
     },
 
     hit: function(dmg) {
       this.p.health -= dmg;
       if (this.p.health <= 0) {
-        death = true;
+        this.destroy();
       }
     },
   });
@@ -273,7 +250,7 @@ const game = function() {
         if ('big_rupee') {
           item = new Q.BigRupee({ x: this.p.x, y: this.p.y });
         }
-        Q.stage().insert(item);
+        Q.stage(Q.stages.length - 1).insert(item);
       }
     },
   });
@@ -324,13 +301,18 @@ const game = function() {
 
       this.on('hit.sprite', function(collision) {
         if (!collision.obj.isA('Player')) return;
+        /*
+        const src = getId(Q.stage(Q.stages.length - 1).scene.name);
+        const dst = getId(this.p.scene);
+        Q.swapScene(src, dst);
+        */
         Q.stageScene(this.p.scene);
       });
     },
   });
 
   ////////// Load TMX level //////////
-  Q.scene('Room1', function(stage) {
+  Q.scene('Room 1', function(stage) {
     Q.stageTMX('Castle_Room1.tmx', stage);
 
     const player = stage.insert(new Q.Player({ x: 300, y: 400 }));
@@ -341,12 +323,12 @@ const game = function() {
 
     for (let i = 0; i < 5; i += 1) {
       stage.insert(
-        new Q.InvisibleBarrier({ x: 296 - i * 16, y: 510, scene: 'Room2' })
+        new Q.InvisibleBarrier({ x: 296 - i * 16, y: 510, scene: 'Room 2' })
       );
     }
   });
 
-  Q.scene('Room2', function(stage) {
+  Q.scene('Room 2', function(stage) {
     Q.stageTMX('Castle_Room2.tmx', stage);
 
     const player = stage.insert(new Q.Player({ x: 300, y: 400 }));
@@ -354,12 +336,12 @@ const game = function() {
 
     for (let i = 0; i < 4; i += 1) {
       stage.insert(
-        new Q.InvisibleBarrier({ x: 510, y: 296 - i * 16, scene: 'Room1' })
+        new Q.InvisibleBarrier({ x: 510, y: 296 - i * 16, scene: 'Room 1' })
       );
     }
 
     // for testing only
-    stage.insert(new Q.InvisibleBarrier({ x: 200, y: 280, scene: 'Room1' }));
+    stage.insert(new Q.InvisibleBarrier({ x: 200, y: 280, scene: 'Room 1' }));
   });
 
   Q.load(
@@ -372,8 +354,17 @@ const game = function() {
       Q.compileSheets('big_chest.png', 'big_chest.json');
       Q.compileSheets('big_rupee.png', 'big_rupee.json');
       Q.loadTMX('Castle_Room1.tmx, Castle_Room2.tmx', function() {
-        Q.stageScene('Room1');
+        /*
+        Q.stageScene('Room 1', 100);
+        Q.stageScene('Room 2', 2);
+        */
+        Q.stageScene('Room 1');
       });
     }
   );
+
+  getId = function(str) {
+    const r = str.split(' ');
+    return parseInt(r[r.length - 1]);
+  };
 };
