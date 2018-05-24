@@ -62,8 +62,22 @@ const game = function() {
       }
     },
 
-    hit: function(dmg) {
+    hit: function (dmg) {
+      hpui = Q.stage().lists['UI.Button'];
       this.p.health -= dmg;
+
+      for (let i = 0; i < this.p.health; i += 1) {
+        if (this.p.health - i >= 1) {
+          hpui[i].p.frame = 0
+        }
+        else if (this.p.health - i > 0) {
+          hpui[i].p.frame = 1
+        }
+      }
+      for (let i = Math.ceil(this.p.health); i < 3; i += 1) {
+        hpui[i].p.frame = 2
+      }
+
       if (this.p.health <= 0) {
         this.p.dead = true;
       }
@@ -317,6 +331,52 @@ const game = function() {
   ////////// Load TMX level //////////
   Q.scene('Room 1', function(stage) {
     Q.stageTMX('Castle_Room1.tmx', stage);
+    
+    const container = stage.insert(
+      new Q.UI.Container({
+        x: Q.width / 2 + 20,
+        y: Q.height / 2 + 20,
+      })
+    );
+
+    container.insert(
+      new Q.UI.Button({
+        x: -Q.width / 2,
+        y: -Q.height / 2 - 10,
+        w: 20,
+        h: 20,
+        sprite: 'life',
+        sheet: 'life',
+        frame: 0,
+        scale: 0.75
+      })
+    );
+
+    container.insert(
+      new Q.UI.Button({
+        x: -Q.width / 2 + 20,
+        y: -Q.height / 2 - 10,
+        w: 20,
+        h: 20,
+        sprite: 'life',
+        sheet: 'life',
+        frame: 0,
+        scale: 0.75
+      })
+    );
+
+    container.insert(
+      new Q.UI.Button({
+        x: -Q.width / 2 + 40,
+        y: -Q.height / 2 - 10,
+        w: 20,
+        h: 20,
+        sprite: 'life',
+        sheet: 'life',
+        frame: 0,
+        scale: 0.75
+      })
+    );
 
     const player = stage.insert(new Q.Player({ x: 300, y: 400 }));
     stage.insert(
@@ -350,12 +410,13 @@ const game = function() {
   Q.load(
     'purple_link.png, purple_link.json, darknut.png, darknut.json, \
     big_chest.json, big_chest.png, big_rupee.json, big_rupee.png, \
-    inv.png, inv_colored.png',
+    inv.png, inv_colored.png, life.png, life.json',
     function() {
       Q.compileSheets('purple_link.png', 'purple_link.json');
       Q.compileSheets('darknut.png', 'darknut.json');
       Q.compileSheets('big_chest.png', 'big_chest.json');
       Q.compileSheets('big_rupee.png', 'big_rupee.json');
+      Q.compileSheets('life.png', 'life.json');
       Q.loadTMX('Castle_Room1.tmx, Castle_Room2.tmx', function() {
         /*
         Q.stageScene('Room 1', 100);
