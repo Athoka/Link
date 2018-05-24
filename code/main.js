@@ -71,6 +71,7 @@ const game = function() {
 
     attack: function() {
       const p = this.p;
+      const radius = p.range * p.tile_size;
       p.attacking = true;
       sprites = Q.stage(Q.stages.length - 1).getSprites();
       for (i in sprites) {
@@ -78,8 +79,9 @@ const game = function() {
         col = { x: p.x - other.x, y: p.y - other.y };
         if (
           !sprites[i].isA('Player') &&
-          Math.abs(col.x) < p.range * p.tile_size &&
-          Math.abs(col.y) < p.range * p.tile_size
+          //Math.abs(col.x) < radius &&
+          //Math.abs(col.y) < radius
+          col.x ** 2 + col.y ** 2 < radius ** 2
         ) {
           if (sprites[i].hit) sprites[i].hit(this.p.damage);
         }
@@ -88,15 +90,16 @@ const game = function() {
 
     interact: function() {
       const p = this.p;
-      c = Q.stage(Q.stages.length - 1).collide(this);
+      const radius = p.range * p.tile_size;
       sprites = Q.stage(Q.stages.length - 1).getSprites();
       for (i in sprites) {
         const other = sprites[i].p;
         col = { x: p.x - other.x, y: p.y - other.y };
         if (
           !sprites[i].isA('Player') &&
-          Math.abs(col.x) < p.range * p.tile_size &&
-          Math.abs(col.y) < p.range * p.tile_size
+          //Math.abs(col.x) < radius &&
+          //Math.abs(col.y) < radius
+          col.x ** 2 + col.y ** 2 < radius ** 2
         ) {
           if (sprites[i].interact) sprites[i].interact();
         }
