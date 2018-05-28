@@ -435,7 +435,7 @@ const game = function() {
     stage.add('viewport').centerOn(320, 255);
 
     stage.insert(
-      new Q.Darknut({ x: 400, y: 300, vfactor: 3, attack_range: 0, damage: 1 })
+      new Q.Darknut({ x: 400, y: 300, vfactor: 3, attack_range: 0, damage: 0 })
     );
     stage.insert(new Q.BigChest({ x: 200, y: 300 }));
 
