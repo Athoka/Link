@@ -537,10 +537,77 @@ const game = function() {
 
   });
 
+
+  Q.scene("mainMenu", function(stage) {
+       const container = stage.insert(
+         new Q.UI.Container({
+           x: Q.width,
+           y: Q.height
+         })
+       );
+         //  const background = container.insert(
+     //     new Q.UI.Button({
+     //       x: -Q.width/2,
+     //       y: -Q.height/2,
+     //       fill: "#CCCCCC",
+     //       asset: "mainTitle.png"
+     //     })
+     //   );
+           const startButton = container.insert(
+         new Q.UI.Button({
+           x: -Q.width/2 + 150,
+           y: -Q.height/2,
+           fill: "#CCCCCC",
+           asset: "startButton.png",
+           keyActionName: "fire"
+         })
+       )
+           startButton.on("click", function() {
+         Q.clearStages();
+         Q.stageScene("Room 1");
+       });
+           creditsButton = container.insert(
+         new Q.UI.Button({
+           x: -Q.width/2 + 150,
+           y: -Q.height/2 + 100,
+           fill: "#CCCCCC",
+           asset: "creditsButton.png",
+           keyActionName: "fire"
+         })
+       )
+           creditsButton.on("click", function() {
+         Q.clearStages();
+         Q.stageScene("Credits");
+       });
+     })
+         Q.scene("Credits", function(stage){
+       const container = stage.insert(
+         new Q.UI.Container({
+           x: Q.width,
+           y: Q.height
+         })
+       )
+           const back = container.insert(
+         new Q.UI.Button({
+           x: -Q.width/2,
+           y: -Q.height/2,
+           fill: "#CCCCCC",
+           asset: "credits.png",
+           keyActionName: "fire"
+         })
+       );
+           back.on("click", function() {
+         Q.clearStages();
+         Q.stageScene("mainTitle");
+       });
+           container.fit(20);
+     });
+
   Q.load(
     'purple_link.png, purple_link.json, darknut.png, darknut.json, \
     big_chest.json, big_chest.png, big_rupee.json, big_rupee.png, \
-    inv.png, inv_colored.png, life.png, life.json',
+    inv.png, inv_colored.png, life.png, life.json, mainTitle.png, \
+    startButton.png, creditsButton.png, credits.png',
     function() {
       Q.compileSheets('purple_link.png', 'purple_link.json');
       Q.compileSheets('darknut.png', 'darknut.json');
