@@ -317,12 +317,10 @@ const game = function() {
 
       this.on('hit.sprite', function(collision) {
         if (!collision.obj.isA('Player')) return;
-        /*
-        const src = getId(Q.stage(Q.stages.length - 1).scene.name);
-        const dst = getId(this.p.scene);
-        Q.swapScene(src, dst);
-        */
-        Q.stageScene(this.p.scene);
+        collision.obj.p.x = this.p.dx;
+        collision.obj.p.y = this.p.dy;
+        collision.obj.p.direction = this.p.dir;
+        Q.stage().centerOn(this.p.viewx, this.p.viewy);
       });
     },
   });
@@ -350,15 +348,45 @@ const game = function() {
     },
   });
 
+  Q.scene('PuzzleDone', function(stage) {
+    var container = stage.insert(
+      new Q.UI.Container({
+        x: Q.width / 2,
+        y: Q.height / 2,
+        fill: 'rgba(0,0,0,0.5)',
+      })
+    );
+    var button = container.insert(
+      new Q.UI.Button({
+        x: 0,
+        y: 0,
+        fill: '#CCCCCC',
+        label: 'OC.',
+      })
+    );
+    var label = container.insert(
+      new Q.UI.Text({
+        x: 10,
+        y: -10 - button.p.h,
+        label: stage.options.label,
+      })
+    );
+    button.on('click', function() {
+      Q.clearStage(2);
+    });
+    container.fit(20);
+  });
+
   ////////// Load TMX level //////////
-  Q.scene('Room 1', function(stage) {
-    Q.stageTMX('Castle_Room1.tmx', stage);
+  Q.scene('Castle', function(stage) {
+    Q.stageTMX('Castle.tmx', stage);
 
     Q.state.reset({ label: 0 });
 
+    // Room 1 container
     const container = stage.insert(
       new Q.UI.Container({
-        x: Q.width / 2 + 20,
+        x: Q.width / 2 + 80,
         y: Q.height / 2 + 20,
       })
     );
@@ -402,7 +430,10 @@ const game = function() {
       })
     );
 
-    const player = stage.insert(new Q.Player({ x: 300, y: 400 }));
+    const player = stage.insert(new Q.Player({ x: 300, y: 470 }));
+
+    stage.add('viewport').centerOn(320, 255);
+
     stage.insert(
       new Q.Darknut({ x: 400, y: 300, vfactor: 3, attack_range: 0, damage: 1 })
     );
@@ -411,56 +442,19 @@ const game = function() {
     stage.insert(new Q.casillaActivacion({ x: 400, y: 450 }));
     stage.insert(new Q.casillaActivacion({ x: 100, y: 450 }));
 
-    for (let i = 0; i < 5; i += 1) {
+    for (let i = 0; i < 8; i += 1) {
       stage.insert(
-        new Q.InvisibleBarrier({ x: 296 - i * 16, y: 510, scene: 'Room 2' })
+        new Q.InvisibleBarrier({
+          x: 360 - i * 16,
+          y: 510,
+          dx: 896,
+          dy: 0,
+          dir: 'up',
+          viewx: 896,
+          viewy: 255,
+        })
       );
     }
-  });
-
-  Q.scene('Room 2', function(stage) {
-    Q.stageTMX('Castle_Room2.tmx', stage);
-
-    const player = stage.insert(new Q.Player({ x: 300, y: 400 }));
-    stage.insert(new Q.BigChest({ x: 200, y: 300 }));
-
-    for (let i = 0; i < 4; i += 1) {
-      stage.insert(
-        new Q.InvisibleBarrier({ x: 510, y: 296 - i * 16, scene: 'Room 1' })
-      );
-    }
-
-    // for testing only
-    stage.insert(new Q.InvisibleBarrier({ x: 200, y: 280, scene: 'Room 1' }));
-  });
-
-  Q.scene('PuzzleDone', function(stage) {
-    var container = stage.insert(
-      new Q.UI.Container({
-        x: Q.width / 2,
-        y: Q.height / 2,
-        fill: 'rgba(0,0,0,0.5)',
-      })
-    );
-    var button = container.insert(
-      new Q.UI.Button({
-        x: 0,
-        y: 0,
-        fill: '#CCCCCC',
-        label: 'OC.',
-      })
-    );
-    var label = container.insert(
-      new Q.UI.Text({
-        x: 10,
-        y: -10 - button.p.h,
-        label: stage.options.label,
-      })
-    );
-    button.on('click', function() {
-      Q.clearStage(2);
-    });
-    container.fit(20);
   });
 
   Q.load(
@@ -473,12 +467,8 @@ const game = function() {
       Q.compileSheets('big_chest.png', 'big_chest.json');
       Q.compileSheets('big_rupee.png', 'big_rupee.json');
       Q.compileSheets('life.png', 'life.json');
-      Q.loadTMX('Castle_Room1.tmx, Castle_Room2.tmx', function() {
-        /*
-        Q.stageScene('Room 1', 100);
-        Q.stageScene('Room 2', 2);
-        */
-        Q.stageScene('Room 1');
+      Q.loadTMX('Castle.tmx', function() {
+        Q.stageScene('Castle');
       });
     }
   );
