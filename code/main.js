@@ -62,20 +62,19 @@ const game = function() {
       }
     },
 
-    hit: function (dmg) {
+    hit: function(dmg) {
       hpui = Q.stage().lists['UI.Button'];
       this.p.health -= dmg;
 
       for (let i = 0; i < this.p.health; i += 1) {
         if (this.p.health - i >= 1) {
-          hpui[i].p.frame = 0
-        }
-        else if (this.p.health - i > 0) {
-          hpui[i].p.frame = 1
+          hpui[i].p.frame = 0;
+        } else if (this.p.health - i > 0) {
+          hpui[i].p.frame = 1;
         }
       }
       for (let i = Math.ceil(this.p.health); i < 3; i += 1) {
-        hpui[i].p.frame = 2
+        hpui[i].p.frame = 2;
       }
 
       if (this.p.health <= 0) {
@@ -329,34 +328,33 @@ const game = function() {
   });
 
   ////////// Activation Grid ///////////
-  Q.Sprite.extend('casillaActivacion',{
-    init: function(p){
+  Q.Sprite.extend('casillaActivacion', {
+    init: function(p) {
       this._super(p, {
         asset: 'inv_colored.png',
-        gravity:0,
+        gravity: 0,
         activated: false,
       });
-      this.on('hit.sprite', function(collision){
-        if(!collision.obj.isA('Player'))return;
-        if(!this.p.activated){
+      this.on('hit.sprite', function(collision) {
+        if (!collision.obj.isA('Player')) return;
+        if (!this.p.activated) {
           this.p.activated = true;
-          console.log(Q.state.get("label"));
-          Q.state.inc("label", 1);
-          console.log(Q.state.get("label"));
-          if(Q.state.get("label") >= 2){
-            Q.stageScene("PuzzleDone",2, {label: "Puzzle resuelto!"});
+          console.log(Q.state.get('label'));
+          Q.state.inc('label', 1);
+          console.log(Q.state.get('label'));
+          if (Q.state.get('label') >= 2) {
+            Q.stageScene('PuzzleDone', 2, { label: 'Puzzle resuelto!' });
           }
         }
       });
-    }
-  })  
-
+    },
+  });
 
   ////////// Load TMX level //////////
   Q.scene('Room 1', function(stage) {
     Q.stageTMX('Castle_Room1.tmx', stage);
-    
-    Q.state.reset({label: 0});
+
+    Q.state.reset({ label: 0 });
 
     const container = stage.insert(
       new Q.UI.Container({
@@ -374,7 +372,7 @@ const game = function() {
         sprite: 'life',
         sheet: 'life',
         frame: 0,
-        scale: 0.75
+        scale: 0.75,
       })
     );
 
@@ -387,7 +385,7 @@ const game = function() {
         sprite: 'life',
         sheet: 'life',
         frame: 0,
-        scale: 0.75
+        scale: 0.75,
       })
     );
 
@@ -400,18 +398,18 @@ const game = function() {
         sprite: 'life',
         sheet: 'life',
         frame: 0,
-        scale: 0.75
+        scale: 0.75,
       })
     );
 
     const player = stage.insert(new Q.Player({ x: 300, y: 400 }));
     stage.insert(
-      new Q.Darknut({ x: 400, y: 300, vfactor: 3, attack_range: 0 })
+      new Q.Darknut({ x: 400, y: 300, vfactor: 3, attack_range: 0, damage: 1 })
     );
     stage.insert(new Q.BigChest({ x: 200, y: 300 }));
 
-    stage.insert(new Q.casillaActivacion({x: 400,y: 450}));
-    stage.insert(new Q.casillaActivacion({x: 100,y: 450}));
+    stage.insert(new Q.casillaActivacion({ x: 400, y: 450 }));
+    stage.insert(new Q.casillaActivacion({ x: 100, y: 450 }));
 
     for (let i = 0; i < 5; i += 1) {
       stage.insert(
@@ -436,21 +434,34 @@ const game = function() {
     stage.insert(new Q.InvisibleBarrier({ x: 200, y: 280, scene: 'Room 1' }));
   });
 
-  Q.scene("PuzzleDone", function(stage){
-    var container = stage.insert(new Q.UI.Container({
-      x: Q.width/2, y: Q.height/2, fill: "rgba(0,0,0,0.5)"
-    }));
-    var button = container.insert(new Q.UI.Button({
-      x: 0, y: 0, fill: "#CCCCCC", label: "OC."
-    }));
-    var label = container.insert(new Q.UI.Text({
-      x:10, y: -10 - button.p.h, label: stage.options.label
-    }));
-    button.on("click",function(){
+  Q.scene('PuzzleDone', function(stage) {
+    var container = stage.insert(
+      new Q.UI.Container({
+        x: Q.width / 2,
+        y: Q.height / 2,
+        fill: 'rgba(0,0,0,0.5)',
+      })
+    );
+    var button = container.insert(
+      new Q.UI.Button({
+        x: 0,
+        y: 0,
+        fill: '#CCCCCC',
+        label: 'OC.',
+      })
+    );
+    var label = container.insert(
+      new Q.UI.Text({
+        x: 10,
+        y: -10 - button.p.h,
+        label: stage.options.label,
+      })
+    );
+    button.on('click', function() {
       Q.clearStage(2);
     });
     container.fit(20);
-  })
+  });
 
   Q.load(
     'purple_link.png, purple_link.json, darknut.png, darknut.json, \
