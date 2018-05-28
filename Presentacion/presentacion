@@ -29,10 +29,14 @@
   * Múltiples parámetros con información importante (salud, estado, etc.)
   * Al ser vista cenital, la gravedad es 0.
   * Completamente animados
-    * (Explicación del proceso de ajuste de sprites?)
+    * Medición, recorte, edición y ajuste de sprites.
+    * Problemas al usar dos spritesheets distintas para andar y atacar, necesidad de combinarlas en una sola.
+    * Retoques en la spritesheet y el tamaño de los sprites para solucionar bugs gráficos.
 * Los objetos inanimados (cofres, rupias) también extienden de Sprite
   * Al ser estáticos solo utilizan animaciones.
   * Los cofres tienen un parámetro que indica su contenido.
+* Mapas diseñados usando Tiled
+  * Combinación de fondos dibujados y elementos con colisión para hacer entornos más detallados (puentes, estatuas, jardines...)
 
 ## Componentes creados
 * aiTrack

@@ -1,0 +1,67 @@
+Presentacion:
+////////////////////// JAIME ///////////////////////////
+Introduccion de la presentacion:
+	Introduccion del juego: fotos (hablar el texto del github)
+
+	Mecanicas:
+		* Libertad de mov
+		* Combate
+		* Salud
+		* Interfaz
+		* Tracking
+		* Puzzles
+		* Interaccion
+
+	Arquitectura de las clases:
+		* Personajes y objetos inanimados
+			Caracteristicas y problemas (por encima)
+		* Stages y Scenes
+			Caracteristicas y problemas (por encima)
+
+////////////////////// IRENE ///////////////////////////
+Personajes e Objetos
+	* Personajes:
+		Propiedades:
+		Funcionamiento
+			* interact 
+			* attack
+			* hit
+			* link's movement 
+			* (aiTrack lo explica antuña con mas detalle)
+	* Objetos
+		Propiedades:
+			Chest:
+				opening: varible que guarda si el cofre esta en el transcurso de la animacion de abrirse
+				open: variable que guarda si el cofre esta abierto o cerrado para poder interactuar con el
+			Rupies
+				tween: componente que nos otorga el poder desplazar el sprite (monedas de mario de la practica 3)
+		Funcionamiento:
+			Delegacion en la clase Player, que avisa al cofre cuando el jugador abre el cofre
+
+/////////////////////// ANTUÑA /////////////////////////
+
+Presentacion que esta en el github
+
+/////////////////////// JOSE ///////////////////////////
+Puzzles:
+	Propiedades:
+		Sprite:
+			activated: variable boolean que guarda si el elemento ha sido activado o no
+		Stage:
+			label: variable que guarda el numero de elementos que se han activado en la scene (Q.state)
+	Funcionamiento:
+		Cuando un objeto colisiona con el elemento, si es el jugador, y el elemento no esta activado, se pone a true y se incrementa el numero de elementos.
+		Si llega al numero total de elementos que se tienen que activar, de momento sale una ventana confirmando la resolucion del puzzle.
+		El objetivo es que se modifique el mapa y se abra una puerta a la siguiente sala.
+
+Que ha ido bien:
+	* Idea muy clara desde el principio
+	* Tareas bien repartidas y trabajo simultáneo
+
+Que ha ido mal:
+	* Complicaciones con Tiled (colisiones)
+		Problemas con las animaciones y el mov, ya que este ultimo es por casillas
+	* Problemas al implementar el cambio de habitación
+  		Inicialmente se iba a cargar las habitaciones de una en una, no todas de golpe.
+	* Proyecto demasiado ambicioso; quisimos hacer mucho más de lo que nos permitía el tiempo.
+		Funcionalidades como dialogos, historia, etc.
