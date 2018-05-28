@@ -311,16 +311,17 @@ const game = function() {
   Q.Sprite.extend('InvisibleBarrier', {
     init: function(p) {
       this._super(p, {
-        asset: 'inv_colored.png',
+        asset: 'inv.png',
         gravity: 0,
       });
 
       this.on('hit.sprite', function(collision) {
         if (!collision.obj.isA('Player')) return;
+        hpcon = Q.stage().lists['UI.Container'][0];
         collision.obj.p.x = this.p.dx;
         collision.obj.p.y = this.p.dy;
-        collision.obj.p.direction = this.p.dir;
         Q.stage().centerOn(this.p.viewx, this.p.viewy);
+        hpcon.p.x = this.p.viewx + 16;
       });
     },
   });
@@ -430,8 +431,9 @@ const game = function() {
       })
     );
 
+    // Room 1
     const player = stage.insert(new Q.Player({ x: 300, y: 470 }));
-
+    
     stage.add('viewport').centerOn(320, 255);
 
     stage.insert(
@@ -442,19 +444,97 @@ const game = function() {
     stage.insert(new Q.casillaActivacion({ x: 400, y: 450 }));
     stage.insert(new Q.casillaActivacion({ x: 100, y: 450 }));
 
+    //go forward
     for (let i = 0; i < 8; i += 1) {
       stage.insert(
         new Q.InvisibleBarrier({
           x: 360 - i * 16,
           y: 510,
           dx: 896,
-          dy: 0,
-          dir: 'up',
+          dy: 30,
           viewx: 896,
           viewy: 255,
         })
       );
     }
+
+    // Room 2
+
+    //go backwards
+    for (let i = 0; i < 8; i += 1) {
+      stage.insert(
+        new Q.InvisibleBarrier({
+          x: 936 - i * 16,
+          y: 0,
+          dx: 300,
+          dy: 480,
+          viewx: 320,
+          viewy: 255,
+        })
+      );
+    }
+
+    //go forward
+    for (let i = 0; i < 8; i += 1) {
+      stage.insert(
+        new Q.InvisibleBarrier({
+          x: 1150,
+          y: 343 - i * 16,
+          dx: 1250,
+          dy: 280,
+          viewx: 1472,
+          viewy: 255,
+        })
+      );
+    }
+
+    // Room 3
+
+    //go backwards
+    for (let i = 0; i < 8; i += 1) {
+      stage.insert(
+        new Q.InvisibleBarrier({
+          x: 1220,
+          y: 343 - i * 16,
+          dx: 1120,
+          dy: 280,
+          viewx: 896,
+          viewy: 255,
+        })
+      );
+    }
+
+    //go forward
+    for (let i = 0; i < 8; i += 1) {
+      stage.insert(
+        new Q.InvisibleBarrier({
+          x: 1590 - i * 16,
+          y: 510,
+          dx: 2130,
+          dy: 40,
+          viewx: 2048,
+          viewy: 255,
+        })
+      );
+    }
+
+    // Room 4
+    
+    //go backward
+    for (let i = 0; i < 8; i += 1) {
+      stage.insert(
+        new Q.InvisibleBarrier({
+          x: 2184 - i * 16,
+          y: 0,
+          dx: 1530,
+          dy: 480,
+          viewx: 1472,
+          viewy: 255,
+        })
+      );
+    }
+
+
   });
 
   Q.load(
