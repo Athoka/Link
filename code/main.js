@@ -656,13 +656,6 @@ const game = function() {
         y: Q.height,
       })
     );
-    const background = container.insert(
-      new Q.UI.Button({
-        x: -Q.width / 2,
-        y: -Q.height / 2,
-        asset: 'mainTitle.png',
-      })
-    );
     const startButton = container.insert(
       new Q.UI.Button({
         x: -Q.width / 2 + 150,
@@ -687,6 +680,13 @@ const game = function() {
       Q.clearStages();
       Q.stageScene('Credits');
     });
+    const background = container.insert(
+      new Q.UI.Button({
+        x: -Q.width / 2,
+        y: -Q.height / 2,
+        asset: 'mainTitle.png',
+      })
+    );
   });
   Q.scene('Credits', function(stage) {
     const container = stage.insert(
@@ -706,7 +706,7 @@ const game = function() {
     );
     back.on('click', function() {
       Q.clearStages();
-      Q.stageScene('mainTitle');
+      Q.stageScene('mainMenu');
     });
     container.fit(20);
   });
