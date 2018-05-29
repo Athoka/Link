@@ -78,7 +78,9 @@ const game = function() {
       }
 
       if (this.p.health <= 0) {
-        this.p.dead = true;
+        Q.stageScene('endGame', 1, {
+          label: 'You Died',
+        });
       }
     },
 
@@ -241,7 +243,7 @@ const game = function() {
         direction: 'down',
         tile_size: 16,
         damage: 0,
-        health: 15,
+        health: 5,
       });
 
       this.on('attack.done', function(collision) {
@@ -286,6 +288,9 @@ const game = function() {
       this.p.health -= dmg;
       if (this.p.health <= 0) {
         this.destroy();
+        Q.stageScene('endGame', 1, {
+          label: 'You Won!',
+        });
       }
     },
   });
@@ -492,11 +497,15 @@ const game = function() {
     );
 
     // Room 1
-    const player = stage.insert(
+    /*const player = stage.insert(
       new Q.Player({ x: 300, y: 50, direction: 'down', stepDistance: 25 })
+    );*/
+    const player = stage.insert(
+      new Q.Player({ x: 2130, y: 40, direction: 'down', stepDistance: 25 })
     );
 
-    stage.add('viewport').centerOn(320, 255);
+    //stage.add('viewport').centerOn(320, 255);
+    stage.add('viewport').centerOn(2048, 255);
 
     stage.insert(
       new Q.Darknut({
@@ -708,6 +717,41 @@ const game = function() {
       Q.clearStages();
       Q.stageScene('mainMenu');
     });
+    container.fit(20);
+  });
+
+  ////////// End Game Screen //////////
+  Q.scene('endGame', function(stage) {
+    const container = stage.insert(
+      new Q.UI.Container({
+        x: Q.width / 2,
+        y: Q.height / 2,
+        fill: 'rgba(0,0,0,0.5)',
+      })
+    );
+
+    const button = container.insert(
+      new Q.UI.Button({
+        x: stage.options.label.length,
+        y: 0,
+        fill: '#CCCCCC',
+        label: 'Menu',
+      })
+    );
+
+    const label = container.insert(
+      new Q.UI.Text({
+        x: 10,
+        y: -30 - button.p.h,
+        label: stage.options.label,
+      })
+    );
+
+    button.on('click', function() {
+      Q.clearStages();
+      Q.stageScene('mainMenu');
+    });
+
     container.fit(20);
   });
 
