@@ -230,6 +230,66 @@ const game = function() {
     },
   });
 
+  /////////
+
+  Q.Sprite.extend('ShadowLink', {
+    init: function(p) {
+      this._super(p, {
+        sheet: 'shadow_link',
+        sprite: 'shadow_link',
+        gravity: 0,
+        direction: 'down',
+        tile_size: 16,
+        damage: 0,
+        health: 15,
+      });
+
+      this.on('attack.done', function(collision) {
+        this.p.attacking = false;
+      });
+
+      this.add('2d, aiTrack, animation');
+    },
+
+    step: function(dt) {
+      /*
+      if (this.p.vy > 0) {
+        this.p.direction = 'down';
+      } else if (this.p.vy < 0) {
+        this.p.direction = 'up';
+      }
+      if (Math.abs(this.p.vx) > Math.abs(this.p.vy)) {
+        if (this.p.vx > 0) {
+          this.p.direction = 'right';
+        } else if (this.p.vx < 0) {
+          this.p.direction = 'left';
+        }
+      }
+
+      if (this.p.direction === 'left') {
+        this.p.flip = 'x';
+      } else {
+        this.p.flip = '';
+      }
+
+      if (this.p.attacking) {
+        this.play('attack_' + this.p.direction);
+      } else if (this.p.tracking) {
+        this.play('walk_' + this.p.direction);
+        this.p.tracking = false;
+      } else {
+        this.play('stand_' + this.p.direction);
+      }*/
+    },
+
+    hit: function(dmg) {
+      this.p.health -= dmg;
+      if (this.p.health <= 0) {
+        this.destroy();
+      }
+    },
+  });
+
   ////////// TREASURE CHEST //////////
 
   Q.Sprite.extend('BigChest', {
@@ -433,7 +493,7 @@ const game = function() {
 
     // Room 1
     const player = stage.insert(new Q.Player({ x: 300, y: 470 }));
-    
+
     stage.add('viewport').centerOn(320, 255);
 
     stage.insert(
@@ -519,7 +579,7 @@ const game = function() {
     }
 
     // Room 4
-    
+
     //go backward
     for (let i = 0; i < 8; i += 1) {
       stage.insert(
@@ -533,87 +593,86 @@ const game = function() {
         })
       );
     }
-
-
   });
 
-
-  Q.scene("mainMenu", function(stage) {
-       const container = stage.insert(
-         new Q.UI.Container({
-           x: Q.width,
-           y: Q.height
-         })
-       );
-         //  const background = container.insert(
-     //     new Q.UI.Button({
-     //       x: -Q.width/2,
-     //       y: -Q.height/2,
-     //       fill: "#CCCCCC",
-     //       asset: "mainTitle.png"
-     //     })
-     //   );
-           const startButton = container.insert(
-         new Q.UI.Button({
-           x: -Q.width/2 + 150,
-           y: -Q.height/2,
-           fill: "#CCCCCC",
-           asset: "startButton.png",
-           keyActionName: "fire"
-         })
-       )
-           startButton.on("click", function() {
-         Q.clearStages();
-         Q.stageScene("Room 1");
-       });
-           creditsButton = container.insert(
-         new Q.UI.Button({
-           x: -Q.width/2 + 150,
-           y: -Q.height/2 + 100,
-           fill: "#CCCCCC",
-           asset: "creditsButton.png",
-           keyActionName: "fire"
-         })
-       )
-           creditsButton.on("click", function() {
-         Q.clearStages();
-         Q.stageScene("Credits");
-       });
-     })
-         Q.scene("Credits", function(stage){
-       const container = stage.insert(
-         new Q.UI.Container({
-           x: Q.width,
-           y: Q.height
-         })
-       )
-           const back = container.insert(
-         new Q.UI.Button({
-           x: -Q.width/2,
-           y: -Q.height/2,
-           fill: "#CCCCCC",
-           asset: "credits.png",
-           keyActionName: "fire"
-         })
-       );
-           back.on("click", function() {
-         Q.clearStages();
-         Q.stageScene("mainTitle");
-       });
-           container.fit(20);
-     });
+  Q.scene('mainMenu', function(stage) {
+    const container = stage.insert(
+      new Q.UI.Container({
+        x: Q.width,
+        y: Q.height,
+      })
+    );
+    //  const background = container.insert(
+    //     new Q.UI.Button({
+    //       x: -Q.width/2,
+    //       y: -Q.height/2,
+    //       fill: "#CCCCCC",
+    //       asset: "mainTitle.png"
+    //     })
+    //   );
+    const startButton = container.insert(
+      new Q.UI.Button({
+        x: -Q.width / 2 + 150,
+        y: -Q.height / 2,
+        fill: '#CCCCCC',
+        asset: 'startButton.png',
+        keyActionName: 'fire',
+      })
+    );
+    startButton.on('click', function() {
+      Q.clearStages();
+      Q.stageScene('Room 1');
+    });
+    creditsButton = container.insert(
+      new Q.UI.Button({
+        x: -Q.width / 2 + 150,
+        y: -Q.height / 2 + 100,
+        fill: '#CCCCCC',
+        asset: 'creditsButton.png',
+        keyActionName: 'fire',
+      })
+    );
+    creditsButton.on('click', function() {
+      Q.clearStages();
+      Q.stageScene('Credits');
+    });
+  });
+  Q.scene('Credits', function(stage) {
+    const container = stage.insert(
+      new Q.UI.Container({
+        x: Q.width,
+        y: Q.height,
+      })
+    );
+    const back = container.insert(
+      new Q.UI.Button({
+        x: -Q.width / 2,
+        y: -Q.height / 2,
+        fill: '#CCCCCC',
+        asset: 'credits.png',
+        keyActionName: 'fire',
+      })
+    );
+    back.on('click', function() {
+      Q.clearStages();
+      Q.stageScene('mainTitle');
+    });
+    container.fit(20);
+  });
 
   Q.load(
     'purple_link.png, purple_link.json, darknut.png, darknut.json, \
     big_chest.json, big_chest.png, big_rupee.json, big_rupee.png, \
     inv.png, inv_colored.png, life.png, life.json, mainTitle.png, \
-    startButton.png, creditsButton.png, credits.png',
+    startButton.png, creditsButton.png, credits.png, \
+    shadow_link.png, shadow_link.json',
     function() {
       Q.compileSheets('purple_link.png', 'purple_link.json');
       Q.compileSheets('darknut.png', 'darknut.json');
       Q.compileSheets('big_chest.png', 'big_chest.json');
       Q.compileSheets('big_rupee.png', 'big_rupee.json');
       Q.compileSheets('life.png', 'life.json');
+      Q.compileSheets('shadow_link.png', 'shadow_link.json');
       Q.loadTMX('Castle.tmx', function() {
         Q.stageScene('Castle');
       });
