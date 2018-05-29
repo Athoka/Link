@@ -254,7 +254,6 @@ const game = function() {
     },
 
     step: function(dt) {
-      /*
       if (this.p.vy > 0) {
         this.p.direction = 'down';
       } else if (this.p.vy < 0) {
@@ -268,7 +267,7 @@ const game = function() {
         }
       }
 
-      if (this.p.direction === 'left') {
+      if (this.p.direction === 'right') {
         this.p.flip = 'x';
       } else {
         this.p.flip = '';
@@ -281,18 +280,54 @@ const game = function() {
         this.p.tracking = false;
       } else {
         this.play('stand_' + this.p.direction);
-      }*/
+      }
     },
 
     hit: function(dmg) {
       this.p.health -= dmg;
       if (this.p.health <= 0) {
         this.destroy();
+        Q.stage(0).pause();
         Q.stageScene('endGame', 1, {
           label: 'You Won!',
         });
       }
     },
+  });
+
+  Q.animations('shadow_link', {
+    walk_up: { frames: [1, 2, 3, 4, 5], rate: 1 / 15 },
+    walk_left: { frames: [11, 12, 13, 14, 15], rate: 1 / 15 },
+    walk_right: { frames: [11, 12, 13, 14, 15], rate: 1 / 15 },
+    walk_down: { frames: [21, 22, 23, 24, 25], rate: 1 / 15 },
+    attack_up: {
+      frames: [6, 7, 8, 9],
+      rate: 1 / 10,
+      next: 'stand_up',
+      trigger: 'attack.done',
+    },
+    attack_left: {
+      frames: [16, 17, 18, 19],
+      rate: 1 / 10,
+      next: 'stand_left',
+      trigger: 'attack.done',
+    },
+    attack_right: {
+      frames: [16, 17, 18, 19],
+      rate: 1 / 10,
+      next: 'stand_right',
+      trigger: 'attack.done',
+    },
+    attack_down: {
+      frames: [26, 27, 28, 29],
+      rate: 1 / 10,
+      next: 'stand_down',
+      trigger: 'attack.done',
+    },
+    stand_up: { frames: [0], rate: 1 / 5 },
+    stand_left: { frames: [10], rate: 1 / 5 },
+    stand_right: { frames: [10], rate: 1 / 5 },
+    stand_down: { frames: [21], rate: 1 / 5 },
   });
 
   ////////// TREASURE CHEST //////////
@@ -497,15 +532,11 @@ const game = function() {
     );
 
     // Room 1
-    /*const player = stage.insert(
-      new Q.Player({ x: 300, y: 50, direction: 'down', stepDistance: 25 })
-    );*/
     const player = stage.insert(
-      new Q.Player({ x: 2130, y: 40, direction: 'down', stepDistance: 25 })
+      new Q.Player({ x: 300, y: 50, direction: 'down', stepDistance: 25 })
     );
 
-    //stage.add('viewport').centerOn(320, 255);
-    stage.add('viewport').centerOn(2048, 255);
+    stage.add('viewport').centerOn(320, 255);
 
     stage.insert(
       new Q.Darknut({
@@ -648,10 +679,11 @@ const game = function() {
         x: 2060,
         y: 300,
         vfactor: 3,
-        view_range: 1,
-        damage: 0,
+        view_range: 10,
+        damage: 0.5,
+        reloadSpeed: 1,
         direction: 'down',
-        scale: 1.2,
+        scale: 1.5,
       })
     );
   });
