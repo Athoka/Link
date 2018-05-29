@@ -5,10 +5,9 @@
 \usepackage{hyperref}
 \usepackage{listings}
 \usepackage{float}
-\usepackage{media9}
+\usepackage{multicol}
 
 \graphicspath{{./images/}}
-\addmediapath{./media/}
 
 \usetheme{Madrid}
 
@@ -29,150 +28,305 @@
 \pgfdeclareimage[height=0.5cm]{university-logo}{images_ignore/university-logo-filename}
 \logo{\pgfuseimage{university-logo}}
 
-\AtBeginSubsection[]
+%%%%% Listings JS
+\lstdefinelanguage{JavaScript}{
+  keywords={typeof, new, true, false, catch, function, return, null, catch, switch, var, if, in, while, do, else, case, break},
+  keywordstyle=\color{blue}\bfseries,
+  ndkeywords={class, export, boolean, throw, implements, import, this},
+  ndkeywordstyle=\color{red}\bfseries,
+  identifierstyle=\color{black},
+  sensitive=false,
+  comment=[l]{//},
+  morecomment=[s]{/*}{*/},
+  commentstyle=\color{purple}\ttfamily,
+  stringstyle=\color{red}\ttfamily,
+  morestring=[b]',
+  morestring=[b]"
+}
+
+\AtBeginSection[]
 {
   \begin{frame}<beamer>{Contenidos}
-    \tableofcontents[currentsection,currentsubsection]
+    \begin{multicols}{2}
+      \tableofcontents[currentsection]
+    \end{multicols}
   \end{frame}
 }
 
 \begin{document}
 
 \begin{frame}
-  \titlepage
+	\titlepage
 \end{frame}
 
 \begin{frame}{Contenidos}
-  \tableofcontents
+	\begin{multicols}{2}
+		\tableofcontents
+	\end{multicols}
 \end{frame}
+
 
 % Section and subsections will appear in the presentation overview
 % and table of contents.
+\section{Introducción al juego}
+
+\begin{frame}{Introducción al juego}
+	\begin{itemize}
+		\item Basado en la saga The Legend of Zelda (Nintendo, 1986).
+		\item Assets de Four Swords y Minish Cap.
+		\item Simplificado, centrado en combates en una mazmorra sencilla.
+		\item Victoria: derrotar al jefe final.
+		\item Derrota: superado límite de impactos.
+	\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Mecánicas}
+
+\begin{frame}{Mecánicas}
+	\begin{itemize}
+		\item Libertad de movimiento.
+		\item Combate.
+		\item Salud.
+		\item Interfaz.
+		\item Tracking.
+		\item Puzzles.
+		\item Interacción con el escenario.
+	\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Arquitectura de las clases}
+
+\subsection{Personajes y objetos inanimados}
+
+\begin{frame}{Personajes y objetos inanimados}
+	\begin{itemize}
+		\item Link y enemigos.
+		\item Basados en Sprite.
+		\item Múltiples parámetros propios de cada personaje.
+		\item Cofres y rupias.
+	\end{itemize}
+\end{frame}
+
+\subsection{Escenario y pantallas}
+
+\begin{frame}{Escenario y pantallas}
+	\begin{itemize}
+		\item Mapa único con zonas de transición.
+		\item Varias habitaciones.
+		\item Menú principal.
+		\item Pantalla de créditos.
+	\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Personajes}
+
+\subsection{Personaje principal}
+
+\begin{frame}{Personaje principal}
+	\begin{itemize}
+		\item Link morado en lugar de Zelda.
+		\item Mecánicas.
+		      \begin{itemize}
+			      \item Interactuar con objetos.
+			      \item Atacar enemigos.
+			      \item Recibir daño.
+			      \item Movimiento.
+		      \end{itemize}
+	\end{itemize}
+\end{frame}
+
+\subsection{Enemigos}
+
+\begin{frame}{Enemigos}
+	\begin{itemize}
+		\item Darknut.
+		\item Varias habitaciones.
+		      \begin{itemize}
+			      \item Persigue al jugador.
+			      \item Ataca.
+			      \item Recibe daño.
+		      \end{itemize}
+	\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Objetos}
+
+\begin{frame}{Objetos}
+	\begin{itemize}
+		\item Cofres.
+		      \begin{itemize}
+			      \item Contienen una rupia.
+			      \item Se abren cuando el jugador interactúa con ellos estando al lado.
+		      \end{itemize}
+		      \medskip
+		\item Rupias.
+		      \begin{itemize}
+			      \item Aparecen al abrir un cofre.
+			      \item Están animadas con tween.
+		      \end{itemize}
+	\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{aiTrack}
 
 \subsection{¿Qué es?}
 
 \begin{frame}{¿Qué es?}
-Es un nuevo componente para la libreria 2d que otorga a un sprite la capacidad
-de localizar, seguir y atacar a otro(s).
-
-\medskip
-
-Está basado en cuadrídula, por lo que solo sirve para 2d con vista cenital.
+	\begin{itemize}
+		\item Nuevo componente 2d.
+		\item Otorga a un sprite capacidad para:
+		      \begin{itemize}
+			      \item Localizar.
+			      \item Seguir.
+			      \item Atacar.
+		      \end{itemize}
+		\item Basado en cuadrícula $\rightarrow$ Solo 2d con vista cenital.
+	\end{itemize}
 \end{frame}
 
 \subsection{Propiedades}
 
 \begin{frame}{Propiedades}
-\begin{itemize}
-  \item \textit{view\_range} y \textit{attack\_range}: Rango al cual se activará
-    el movimiento o ataque
-  \item \textit{tile\_size}: Tamaño de un tile de la cuadrídula
-  \item \textit{vfactor}: Multiplicador de velocidad\\
-    v = tile\_size * vfactor
-  \item \textit{attacking} y \textit{tracking}: Indica si el sprite está
-    atacando o persiguiendo a un enemigo
-  \item \textit{reloadSpeed}: Tiempo de enfriamiento de un ataque
-  \item \textit{reload}: Enfriamiento actual
-  \item \textit{track\_class}: Lista de clases con las que el sprite interactuará
-\end{itemize}
+	\begin{itemize}
+		\item \textit{view\_range} y \textit{attack\_range}: Rango de activación.
+		\item \textit{tile\_size}: Tamaño de un tile de la cuadrídula.
+		\item \textit{vfactor}: Multiplicador de velocidad\\
+		      \hspace{5mm}v = tile\_size * vfactor
+		\item \textit{attacking} y \textit{tracking}: Indicadores de acción en curso
+		\item \textit{reloadSpeed}: Tiempo de enfriamiento de un ataque
+		\item \textit{reload}: Enfriamiento actual
+		\item \textit{track\_class}: Lista de clases con las que el sprite interactuará
+	\end{itemize}
 \end{frame}
 
 \subsection{Funcionamiento}
 
 \begin{frame}{Funcionamiento}
-En cada iteración del bucle de juego el modulo Scenes activará la señal
-\textbf{range.check} para todos los componentes de la escena.
+	En cada iteración del bucle de juego el modulo Scenes activará la señal
+	\textbf{range.check} para todos los componentes de la escena.
 
-\medskip
+	\medskip
 
-El componente escucha esta señal y comprueba la distancia entre la entidad y
-los elementos de la escena cuya clase esté en la lista.
+	El componente escucha esta señal y comprueba la distancia entre la entidad y
+	los elementos de la escena cuya clase esté en la lista.
 
-\medskip
+	\medskip
 
-Hay tres posibilidades:
-\begin{itemize}
-  \item No está en rango $\rightarrow$ No ocurre nada
-  \item Está en rango de ataque $\rightarrow$ Activa la señal
-    \textbf{range.attack}
-  \item Está en rango de movimiento $\rightarrow$ Activa la señal
-    \textbf{range.view}
-\end{itemize}
+	Hay tres posibilidades:
+	\begin{itemize}
+		\item No está en rango $\rightarrow$ No ocurre nada
+		\item Está en rango de ataque $\rightarrow$ Activa la señal
+		      \textbf{range.attack}
+		\item Está en rango de movimiento $\rightarrow$ Activa la señal
+		      \textbf{range.view}
+	\end{itemize}
 \end{frame}
 
 \subsection{Triggers}
 
 \begin{frame}{range.attack}
-Esta señal activa la función attack del componente.
+	Esta señal activa la función attack del componente.
 
-\medskip
+	\medskip
 
-Si reload es menor o igual que 0.
-\begin{itemize}
-  \item Activa el atributo attacking
-  \item Resetea el tiempo de enfriamiento
-  \item Invoca la función hit y le pasa el atributo damage de la entidad
-\end{itemize}
+	Si reload es menor o igual que 0.
+	\begin{itemize}
+		\item Activa el atributo attacking
+		\item Resetea el tiempo de enfriamiento
+		\item Invoca la función hit y le pasa el atributo damage de la entidad
+	\end{itemize}
 \end{frame}
 
 \begin{frame}{range.view}
-Esta señal activa la función move del componente.
+	Esta señal activa la función move del componente.
 
-\medskip
+	\medskip
 
-Esta función trata de equiparar el componente x e y de la entidad a los del
-elemento que esta siguiendo.
+	Esta función trata de equiparar el componente x e y de la entidad a los del
+	elemento que esta siguiendo.
 
-\begin{center}
-  vx = $\pm$ tile\_size * vfactor\\
-  vy = $\pm$ tile\_size * vfactor
-\end{center}
+	\begin{center}
+		vx = $\pm$ tile\_size * vfactor\\
+		vy = $\pm$ tile\_size * vfactor
+	\end{center}
 \end{frame}
 
-\subsection{Demostración}
-\begin{frame}{Demostración}
-  \centering
-  \includemedia[
-    activate=onclick,
-    width=.5\textwidth
-  ]{\includegraphics{Tracker-0.png}}{Tracker.mp4}
-\end{frame}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Componente stepControls}
 
 \subsection{Problema}
 
 \begin{frame}{Problema}
-Para que el sprite se pueda mover en las 4 direcciones usamos el componente
-de Quintus stepControls pero genera clipping al combinarse con nuestro aiTrack.
+	Para que el sprite se pueda mover en las 4 direcciones usamos el componente
+	de Quintus stepControls pero genera clipping al combinarse con nuestro aiTrack.
 
-\medskip
+	\medskip
 
-El componente comprueba si la entidad colisiona y de hacerlo la devuelve al
-origen, el problema es que los enemigos te persiguen y este componente impide
-que el sprite escape.
+	El componente comprueba si la entidad colisiona y de hacerlo la devuelve al
+	origen, el problema es que los enemigos te persiguen y este componente impide
+	que el sprite escape.
 \end{frame}
 
 \begin{frame}{Código}
-  \lstinputlisting{code/stepProblem.js}
+	\lstinputlisting[language=JavaScript]{code/stepProblem.js}
 \end{frame}
 
 \subsection{Solución}
 
-\begin{frame}{Problema}
-Para solucionar este problema nos aprovechamos de un atributo de los
-sprites en los que usamos este componente, todos tienen el atributo direction.
+\begin{frame}{Solución}
+	Para solucionar este problema nos aprovechamos de un atributo de los
+	sprites en los que usamos este componente, todos tienen el atributo
+	\textbf{direction}.
 
-\medskip
+	\medskip
 
-Gracias a dicho atributo sabemos en que dirección se esta moviendo por lo que
-podemos modificar el código para que se resetee la posicion solo si se mueve
-hacia el objeto.
+	Gracias a dicho atributo sabemos en que dirección se esta moviendo por lo que
+	podemos modificar el código para que se resetee la posicion solo si se mueve
+	hacia el objeto.
 \end{frame}
 
 \begin{frame}{Código}
-  \lstinputlisting{code/stepSol.js}
+	\lstinputlisting[language=JavaScript]{code/stepSol.js}
 \end{frame}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Puzzles}
+
+\begin{frame}{Puzzles}
+	\begin{itemize}
+		\item Propiedades.
+		      \begin{itemize}
+			      \item Sprite $\rightarrow$ \textit{activated}.
+			      \item Stage $\rightarrow$ \textit{label}.
+		      \end{itemize}
+		\item Funcionamiento.
+	\end{itemize}
+\end{frame}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Postmortem}
+
+\subsection{¿Qué nos ha ido bien?}
+
+\begin{frame}{¿Qué nos ha ido bien?}
+	\begin{itemize}
+		\item Idea muy clara desde el principio.
+		\item Tareas bien repartidas y trabajo simultáneo
+	\end{itemize}
+\end{frame}
+
+\subsection{¿Qué nos ha ido mal o se podría mejorar?}
+
+\begin{frame}{¿Qué nos ha ido mal o se podría mejorar?}
+	\begin{itemize}
+		\item Complicaciones con Tiled.
+		\item Implementación del cambio de habitación.
+		\item Proyecto demasiado ambicioso.
+	\end{itemize}
+\end{frame}
 \end{document}
