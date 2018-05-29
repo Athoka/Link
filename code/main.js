@@ -492,17 +492,33 @@ const game = function() {
     );
 
     // Room 1
-    const player = stage.insert(new Q.Player({ x: 300, y: 470 }));
+    const player = stage.insert(
+      new Q.Player({ x: 300, y: 50, direction: 'down', stepDistance: 25 })
+    );
 
     stage.add('viewport').centerOn(320, 255);
 
     stage.insert(
-      new Q.Darknut({ x: 400, y: 300, vfactor: 3, attack_range: 0, damage: 0 })
+      new Q.Darknut({
+        x: 150,
+        y: 260,
+        vfactor: 3,
+        damage: 1,
+        direction: 'right',
+      })
     );
-    stage.insert(new Q.BigChest({ x: 200, y: 300 }));
-
-    stage.insert(new Q.casillaActivacion({ x: 400, y: 450 }));
-    stage.insert(new Q.casillaActivacion({ x: 100, y: 450 }));
+    stage.insert(
+      new Q.Darknut({
+        x: 330,
+        y: 450,
+        vfactor: 3,
+        damage: 0,
+        direction: 'up',
+      })
+    );
+    stage.insert(new Q.BigChest({ x: 100, y: 260, angle: -90 }));
+    stage.insert(new Q.casillaActivacion({ x: 500, y: 450 }));
+    stage.insert(new Q.casillaActivacion({ x: 135, y: 450 }));
 
     //go forward
     for (let i = 0; i < 8; i += 1) {
@@ -548,6 +564,28 @@ const game = function() {
       );
     }
 
+    stage.insert(new Q.BigChest({ x: 1050, y: 60 }));
+    stage.insert(
+      new Q.Darknut({
+        x: 1000,
+        y: 80,
+        vfactor: 3,
+        damage: 0,
+        view_range: 5,
+        direction: 'down',
+      })
+    );
+    stage.insert(
+      new Q.Darknut({
+        x: 1100,
+        y: 80,
+        vfactor: 3,
+        damage: 0,
+        view_range: 5,
+        direction: 'down',
+      })
+    );
+
     // Room 3
 
     //go backwards
@@ -578,6 +616,8 @@ const game = function() {
       );
     }
 
+    stage.insert(new Q.BigChest({ x: 1270, y: 430, angle: -90 }));
+
     // Room 4
 
     //go backward
@@ -593,7 +633,21 @@ const game = function() {
         })
       );
     }
+
+    stage.insert(
+      new Q.ShadowLink({
+        x: 2060,
+        y: 300,
+        vfactor: 3,
+        view_range: 1,
+        damage: 0,
+        direction: 'down',
+        scale: 1.2,
+      })
+    );
   });
+
+  // Menu
 
   Q.scene('mainMenu', function(stage) {
     const container = stage.insert(
@@ -602,32 +656,29 @@ const game = function() {
         y: Q.height,
       })
     );
-    //  const background = container.insert(
-    //     new Q.UI.Button({
-    //       x: -Q.width/2,
-    //       y: -Q.height/2,
-    //       fill: "#CCCCCC",
-    //       asset: "mainTitle.png"
-    //     })
-    //   );
+    const background = container.insert(
+      new Q.UI.Button({
+        x: -Q.width / 2,
+        y: -Q.height / 2,
+        asset: 'mainTitle.png',
+      })
+    );
     const startButton = container.insert(
       new Q.UI.Button({
         x: -Q.width / 2 + 150,
         y: -Q.height / 2,
-        fill: '#CCCCCC',
         asset: 'startButton.png',
         keyActionName: 'fire',
       })
     );
     startButton.on('click', function() {
       Q.clearStages();
-      Q.stageScene('Room 1');
+      Q.stageScene('Castle');
     });
     creditsButton = container.insert(
       new Q.UI.Button({
         x: -Q.width / 2 + 150,
         y: -Q.height / 2 + 100,
-        fill: '#CCCCCC',
         asset: 'creditsButton.png',
         keyActionName: 'fire',
       })
@@ -674,13 +725,9 @@ const game = function() {
       Q.compileSheets('life.png', 'life.json');
       Q.compileSheets('shadow_link.png', 'shadow_link.json');
       Q.loadTMX('Castle.tmx', function() {
-        Q.stageScene('Castle');
+        //Q.stageScene('Castle');
+        Q.stageScene('mainMenu');
       });
     }
   );
-
-  getId = function(str) {
-    const r = str.split(' ');
-    return parseInt(r[r.length - 1]);
-  };
 };
