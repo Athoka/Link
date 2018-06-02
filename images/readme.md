@@ -19,3 +19,7 @@ medium_rupias -> 20x20
 big_rupias -> 36x36
 
 Life -> 57x52
+
+Gel -> 18x20
+
+Wisp -> 18x18
