@@ -34,9 +34,10 @@ const game = function() {
     },
 
     step: function(dt) {
-      dirs = ['up', 'down', 'left', 'right'];
+      const dirs = ['up', 'down', 'left', 'right'];
+      this.p.directions = [];
       if (!Q.inputs[this.p.direction]) {
-        for (d in dirs) {
+        for (let d in dirs) {
           if (Q.inputs[dirs[d]]) {
             this.p.direction = dirs[d];
             break;
@@ -94,8 +95,6 @@ const game = function() {
         col = { x: p.x - other.x, y: p.y - other.y };
         if (
           !sprites[i].isA('Player') &&
-          //Math.abs(col.x) < radius &&
-          //Math.abs(col.y) < radius
           col.x ** 2 + col.y ** 2 < radius ** 2
         ) {
           if (sprites[i].hit) sprites[i].hit(this.p.damage);
@@ -112,8 +111,6 @@ const game = function() {
         col = { x: p.x - other.x, y: p.y - other.y };
         if (
           !sprites[i].isA('Player') &&
-          //Math.abs(col.x) < radius &&
-          //Math.abs(col.y) < radius
           col.x ** 2 + col.y ** 2 < radius ** 2
         ) {
           if (sprites[i].interact) sprites[i].interact();
@@ -707,7 +704,7 @@ const game = function() {
     );
     startButton.on('click', function() {
       Q.clearStages();
-      Q.stageScene('Castle');
+      Q.stageScene('Village');
     });
     creditsButton = container.insert(
       new Q.UI.Button({
@@ -787,6 +784,15 @@ const game = function() {
     container.fit(20);
   });
 
+  ////////// Load TMX level //////////
+  Q.scene('Village', function(stage) {
+    Q.stageTMX('village_map.tmx', stage);
+
+    stage.add('viewport').follow(stage.lists.Player[0]);
+    //centerOn(Q.width * 0.5, Q.height * 0.5);
+    stage.viewport.scale = 1;
+  });
+
   Q.load(
     'purple_link.png, purple_link.json, darknut.png, darknut.json, \
     big_chest.json, big_chest.png, big_rupee.json, big_rupee.png, \
@@ -800,7 +806,7 @@ const game = function() {
       Q.compileSheets('big_rupee.png', 'big_rupee.json');
       Q.compileSheets('life.png', 'life.json');
       Q.compileSheets('shadow_link.png', 'shadow_link.json');
-      Q.loadTMX('Castle.tmx', function() {
+      Q.loadTMX('village_map.tmx', function() {
         //Q.stageScene('Castle');
         Q.stageScene('mainMenu');
       });
