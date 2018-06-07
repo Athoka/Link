@@ -371,6 +371,25 @@ const game = function() {
   Q.animations('big_chest', {
     open: { frames: [1, 2, 3], rate: 1 / 5, loop: false },
   });
+  ////////// NPCs  //////////
+  Q.Sprite.extend('npc1',{
+    init: function(p){
+      this._super(p, {
+        sheet: 'shadow_link',
+        sprite: 'shadow_link',
+        frame: 0,
+        gravity: 0,
+        talking: false,
+      })
+    },
+    interact: function(){
+      if(!this.p.talking){
+        this.p.talking = true;
+        Q.stageScene("npcTalk", 2, {label: "Holaaaaaa!"});
+      }
+    },
+  });
+
 
   ////////// Items //////////
   Q.Sprite.extend('BigRupee', {
@@ -783,7 +802,24 @@ const game = function() {
 
     container.fit(20);
   });
-
+  ////////// NPC TALKING /////////////
+  Q.scene('npcTalk', function(stage){
+    var container = stage.insert(new Q.UI.Container({
+      x: Q.width/2, y: (Q.height-Q.height/8-50), fill: "rgba(0,0,0,0.5)", w: Q.width, h:Q.height/8, keyActionName: 'action'
+    }));
+    //var button = container.insert(new Q.UI.Button({keyActionName: "action"}));
+    var label = container.insert(new Q.UI.Text({
+      //x:10, 
+      //y: -10 - button.p.h, 
+      label: stage.options.label,
+      color: "white",
+    }));
+    
+    container.on("action",function(){
+      Q.clearStage(3);
+    });
+    container.fit(Q.height/8);
+  });
   ////////// Load TMX level //////////
   Q.scene('Village', function(stage) {
     Q.stageTMX('village_map.tmx', stage);
