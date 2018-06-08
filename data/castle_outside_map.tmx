@@ -3100,84 +3100,98 @@
   <object id="9" x="435" y="610" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="10" x="447" y="611" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="11" x="463" y="611" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="12" x="473" y="612" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="13" x="418" y="612" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="14" x="489" y="613" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="15" x="509" y="613" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="16" x="523" y="613" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="17" x="540" y="613" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="18" x="556" y="613" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="19" x="571" y="613" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="20" x="584" y="613" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="backward"/>
     <property name="scene" value="Village"/>
    </properties>
   </object>
   <object id="21" x="305" y="171" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="forward"/>
     <property name="scene" value="Castle"/>
    </properties>
   </object>
   <object id="22" x="321" y="171" width="11" height="18">
    <properties>
     <property name="Class" value="InvisibleBarrier"/>
+    <property name="direction" value="forward"/>
     <property name="scene" value="Castle"/>
    </properties>
   </object>
