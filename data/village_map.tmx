@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" infinite="0" nextobjectid="41">
+<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" infinite="0" nextobjectid="50">
  <tileset firstgid="1" name="village_bank.png" tilewidth="16" tileheight="16" tilecount="396" columns="11">
   <image source="../images/village_bank.png" width="176" height="576"/>
   <tile id="95">
@@ -33,7 +33,7 @@
    </objectgroup>
   </tile>
  </tileset>
- <layer name="background" width="64" height="64" locked="1">
+ <layer name="background" width="64" height="64">
   <properties>
    <property name="collision" value="false"/>
   </properties>
@@ -8252,6 +8252,36 @@
     <property name="Class" value="npc1"/>
     <property name="direction" value="down"/>
     <property name="stepDistance" type="int" value="25"/>
+   </properties>
+  </object>
+  <object id="41" name="Barrier" x="722" y="4" width="18" height="15">
+   <properties>
+    <property name="Class" value="InvisibleBarrier"/>
+    <property name="scene" value="CastleOut"/>
+   </properties>
+  </object>
+  <object id="45" name="Barrier" x="737" y="1" width="18" height="15">
+   <properties>
+    <property name="Class" value="InvisibleBarrier"/>
+    <property name="scene" value="CastleOut"/>
+   </properties>
+  </object>
+  <object id="46" name="Barrier" x="754" y="1" width="18" height="15">
+   <properties>
+    <property name="Class" value="InvisibleBarrier"/>
+    <property name="scene" value="CastleOut"/>
+   </properties>
+  </object>
+  <object id="47" name="Barrier" x="776" y="1" width="18" height="15">
+   <properties>
+    <property name="Class" value="InvisibleBarrier"/>
+    <property name="scene" value="CastleOut"/>
+   </properties>
+  </object>
+  <object id="48" name="Barrier" x="798" y="1" width="18" height="15">
+   <properties>
+    <property name="Class" value="InvisibleBarrier"/>
+    <property name="scene" value="CastleOut"/>
    </properties>
   </object>
  </objectgroup>
