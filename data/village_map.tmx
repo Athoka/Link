@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<map version="1.0" tiledversion="1.1.5" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" infinite="0" nextobjectid="41">
+<map version="1.0" tiledversion="2018.04.18" orientation="orthogonal" renderorder="right-down" width="64" height="64" tilewidth="16" tileheight="16" infinite="0" nextobjectid="41">
  <tileset firstgid="1" name="village_bank.png" tilewidth="16" tileheight="16" tilecount="396" columns="11">
   <image source="../images/village_bank.png" width="176" height="576"/>
   <tile id="95">
@@ -33,9 +33,10 @@
    </objectgroup>
   </tile>
  </tileset>
- <layer name="background" width="64" height="64" locked="1">
+ <layer name="Background" width="64" height="64" locked="1">
   <properties>
-   <property name="collision" value="false"/>
+   <property name="collision" type="bool" value="false"/>
+   <property name="type" type="int" value="0"/>
   </properties>
   <data>
    <tile/>
@@ -4138,7 +4139,7 @@
  </layer>
  <layer name="Collisions" width="64" height="64">
   <properties>
-   <property name="collision" value="true"/>
+   <property name="collision" type="bool" value="true"/>
   </properties>
   <data>
    <tile gid="2"/>
@@ -8257,7 +8258,8 @@
  </objectgroup>
  <layer name="Front" width="64" height="64" locked="1">
   <properties>
-   <property name="collision" value="false"/>
+   <property name="collision" type="bool" value="true"/>
+   <property name="type" type="int" value="0"/>
   </properties>
   <data>
    <tile/>
