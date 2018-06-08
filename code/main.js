@@ -17,6 +17,7 @@ const game = function() {
         sheet: 'purple_link',
         direction: 'up',
         health: 3,
+        max_health: 3,
         stepDistance: 16,
         stepDelay: 0.2,
         gravity: 0,
@@ -51,6 +52,10 @@ const game = function() {
         this.p.flip = '';
       }
 
+      // Refresh hp HUD
+      this.hpHUD();
+      
+
       if (this.p.attacking && this.p.health > 0) {
         this.play('attack_' + this.p.direction);
         this.p.attacking = false;
@@ -63,23 +68,14 @@ const game = function() {
       }
     },
 
-    hit: function(dmg) {
-      hpui = Q.stage().lists['UI.Button'];
+    hit: function(dmg) { 
       this.p.health -= dmg;
 
-      for (let i = 0; i < this.p.health; i += 1) {
-        if (this.p.health - i >= 1) {
-          hpui[i].p.frame = 0;
-        } else if (this.p.health - i > 0) {
-          hpui[i].p.frame = 1;
-        }
-      }
-      for (let i = Math.ceil(this.p.health); i < 3; i += 1) {
-        hpui[i].p.frame = 2;
-      }
+      this.hpHUD();
 
       if (this.p.health <= 0) {
-        Q.stageScene('endGame', 1, {
+        this.destroy();
+        Q.stageScene('endGame', 2, {
           label: 'You Died',
         });
       }
@@ -89,7 +85,7 @@ const game = function() {
       const p = this.p;
       const radius = p.range * p.tile_size;
       p.attacking = true;
-      sprites = Q.stage(Q.stages.length - 1).getSprites();
+      sprites = Q.stage(1).getSprites();
       for (i in sprites) {
         const other = sprites[i].p;
         col = { x: p.x - other.x, y: p.y - other.y };
@@ -105,7 +101,7 @@ const game = function() {
     interact: function() {
       const p = this.p;
       const radius = p.range * p.tile_size;
-      sprites = Q.stage(Q.stages.length - 1).getSprites();
+      sprites = Q.stage(1).getSprites();
       for (i in sprites) {
         const other = sprites[i].p;
         col = { x: p.x - other.x, y: p.y - other.y };
@@ -113,10 +109,25 @@ const game = function() {
           !sprites[i].isA('Player') &&
           col.x ** 2 + col.y ** 2 < radius ** 2
         ) {
-          if (sprites[i].interact) sprites[i].interact();
+          if (sprites[i].interact) sprites[i].interact(this);
         }
       }
     },
+
+    hpHUD: function() {
+      hpui = Q.stage(2).lists['UI.Button'];
+
+      for (let i = 0; i < this.p.health; i += 1) {
+        if (this.p.health - i >= 1) {
+          hpui[i].p.frame = 0;
+        } else if (this.p.health - i > 0) {
+          hpui[i].p.frame = 1;
+        }
+      }
+      for (let i = Math.ceil(this.p.health); i < 3; i += 1) {
+        hpui[i].p.frame = 2;
+      }
+    }
   });
 
   Q.animations('purple_link', {
@@ -284,8 +295,9 @@ const game = function() {
       this.p.health -= dmg;
       if (this.p.health <= 0) {
         this.destroy();
-        Q.stage(0).pause();
-        Q.stageScene('endGame', 1, {
+        Q.stage(1).pause();
+        Q.clearStage(2);
+        Q.stageScene('endGame', 2, {
           label: 'You Won!',
         });
       }
@@ -355,15 +367,21 @@ const game = function() {
       }
     },
 
-    interact: function() {
+    interact: function(obj) {
       if (!this.p.open) {
         this.p.open = true;
         this.p.opening = true;
         let item = '';
-        if ('big_rupee') {
-          item = new Q.BigRupee({ x: this.p.x, y: this.p.y });
+        switch (this.p.reward) {
+          case 'big_rupee':
+            item = new Q.BigRupee({ x: this.p.x, y: this.p.y });
+            break;
+          case 'heart':
+            obj.p.health = obj.p.max_health;
+            item = new Q.Heart({ x: this.p.x, y: this.p.y });
+            break;
         }
-        Q.stage(Q.stages.length - 1).insert(item);
+        Q.stage(1).insert(item);
       }
     },
   });
@@ -423,6 +441,28 @@ const game = function() {
     },
   });
 
+  Q.Sprite.extend('Heart', {
+    init: function(p) {
+      this._super(p, {
+        sheet: 'life',
+        frame: 0,
+        sprite: 'life',
+        gravity: 0,
+        sensor: true,
+        scale: 0.5,
+      });
+
+      this.add('tween');
+    },
+    step: function(p) {
+      this.animate({ y: this.p.y - 30 }, 1, Q.Easing.Linear, {
+        callback: function() {
+          this.destroy();
+        },
+      });
+    },
+  });
+
   ////////// Invisible barrier //////////
   Q.Sprite.extend('InvisibleBarrier', {
     init: function(p) {
@@ -433,16 +473,49 @@ const game = function() {
 
       this.on('hit.sprite', function(collision) {
         if (!collision.obj.isA('Player')) return;
-        hpcon = Q.stage().lists['UI.Container'][0];
-        collision.obj.p.x = this.p.dx;
-        collision.obj.p.y = this.p.dy;
-        Q.stage().centerOn(this.p.viewx, this.p.viewy);
-        hpcon.p.x = this.p.viewx + 16;
+        const hp = collision.obj.p.health;
+        const source = Q.stage(1).scene.name;
+        Q.clearStages();
+        Q.stageScene(this.p.scene, 1);
+        Q.stageScene('HUD', 2);
+        const sprites = Q.stage(1).getSprites();
+        let player = '';
+        let dest = {x: 0, y: 0};
+        for (s in sprites) {
+          obj = sprites[s];
+          if (obj.isA('Player')) {
+            player = obj;
+          } else if (obj.isA('InvisibleBarrier')) {
+            switch (this.p.scene) {
+              case 'Village':
+                dest.x = obj.p.x;
+                dest.y = obj.p.y + 20;
+                break;
+              case 'CastleOut':
+                if (source === 'Village' && obj.p.direction === 'backward') {
+                  dest.x = obj.p.x;
+                  dest.y = obj.p.y - 20;
+                } else if (source === 'Castle' && obj.p.direction === 'forward') {
+                  dest.x = obj.p.x;
+                  dest.y = obj.p.y + 20;
+                }
+                break;
+              case 'Castle':
+                dest.x = obj.p.x;
+                dest.y = obj.p.y - 20;
+                break;
+            }
+          }
+        }
+        player.p.health = hp;
+        player.p.x = dest.x;
+        player.p.y = dest.y;
       });
     },
   });
 
   ////////// Activation Grid ///////////
+  /*
   Q.Sprite.extend('casillaActivacion', {
     init: function(p) {
       this._super(p, {
@@ -493,219 +566,9 @@ const game = function() {
     });
     container.fit(20);
   });
+  */
 
-  ////////// Load TMX level //////////
-  Q.scene('Castle', function(stage) {
-    Q.stageTMX('Castle.tmx', stage);
-
-    Q.state.reset({ label: 0 });
-
-    // Room 1 container
-    const container = stage.insert(
-      new Q.UI.Container({
-        x: Q.width / 2 + 80,
-        y: Q.height / 2 + 20,
-      })
-    );
-
-    container.insert(
-      new Q.UI.Button({
-        x: -Q.width / 2,
-        y: -Q.height / 2 - 10,
-        w: 20,
-        h: 20,
-        sprite: 'life',
-        sheet: 'life',
-        frame: 0,
-        scale: 0.75,
-      })
-    );
-
-    container.insert(
-      new Q.UI.Button({
-        x: -Q.width / 2 + 20,
-        y: -Q.height / 2 - 10,
-        w: 20,
-        h: 20,
-        sprite: 'life',
-        sheet: 'life',
-        frame: 0,
-        scale: 0.75,
-      })
-    );
-
-    container.insert(
-      new Q.UI.Button({
-        x: -Q.width / 2 + 40,
-        y: -Q.height / 2 - 10,
-        w: 20,
-        h: 20,
-        sprite: 'life',
-        sheet: 'life',
-        frame: 0,
-        scale: 0.75,
-      })
-    );
-
-    // Room 1
-    const player = stage.insert(
-      new Q.Player({ x: 300, y: 50, direction: 'down', stepDistance: 25 })
-    );
-
-    stage.add('viewport').centerOn(320, 255);
-
-    stage.insert(
-      new Q.Darknut({
-        x: 150,
-        y: 260,
-        vfactor: 3,
-        damage: 1,
-        direction: 'right',
-      })
-    );
-    stage.insert(
-      new Q.Darknut({
-        x: 330,
-        y: 450,
-        vfactor: 3,
-        damage: 0,
-        direction: 'up',
-      })
-    );
-    stage.insert(new Q.BigChest({ x: 100, y: 260, angle: -90 }));
-    stage.insert(new Q.casillaActivacion({ x: 500, y: 450 }));
-    stage.insert(new Q.casillaActivacion({ x: 135, y: 450 }));
-
-    //go forward
-    for (let i = 0; i < 8; i += 1) {
-      stage.insert(
-        new Q.InvisibleBarrier({
-          x: 360 - i * 16,
-          y: 510,
-          dx: 896,
-          dy: 30,
-          viewx: 896,
-          viewy: 255,
-        })
-      );
-    }
-
-    // Room 2
-
-    //go backwards
-    for (let i = 0; i < 8; i += 1) {
-      stage.insert(
-        new Q.InvisibleBarrier({
-          x: 936 - i * 16,
-          y: 0,
-          dx: 300,
-          dy: 480,
-          viewx: 320,
-          viewy: 255,
-        })
-      );
-    }
-
-    //go forward
-    for (let i = 0; i < 8; i += 1) {
-      stage.insert(
-        new Q.InvisibleBarrier({
-          x: 1150,
-          y: 343 - i * 16,
-          dx: 1250,
-          dy: 280,
-          viewx: 1472,
-          viewy: 255,
-        })
-      );
-    }
-
-    stage.insert(new Q.BigChest({ x: 1050, y: 60 }));
-    stage.insert(
-      new Q.Darknut({
-        x: 1000,
-        y: 80,
-        vfactor: 3,
-        damage: 0,
-        view_range: 5,
-        direction: 'down',
-      })
-    );
-    stage.insert(
-      new Q.Darknut({
-        x: 1100,
-        y: 80,
-        vfactor: 3,
-        damage: 0,
-        view_range: 5,
-        direction: 'down',
-      })
-    );
-
-    // Room 3
-
-    //go backwards
-    for (let i = 0; i < 8; i += 1) {
-      stage.insert(
-        new Q.InvisibleBarrier({
-          x: 1220,
-          y: 343 - i * 16,
-          dx: 1120,
-          dy: 280,
-          viewx: 896,
-          viewy: 255,
-        })
-      );
-    }
-
-    //go forward
-    for (let i = 0; i < 8; i += 1) {
-      stage.insert(
-        new Q.InvisibleBarrier({
-          x: 1590 - i * 16,
-          y: 510,
-          dx: 2130,
-          dy: 40,
-          viewx: 2048,
-          viewy: 255,
-        })
-      );
-    }
-
-    stage.insert(new Q.BigChest({ x: 1270, y: 430, angle: -90 }));
-
-    // Room 4
-
-    //go backward
-    for (let i = 0; i < 8; i += 1) {
-      stage.insert(
-        new Q.InvisibleBarrier({
-          x: 2184 - i * 16,
-          y: 0,
-          dx: 1530,
-          dy: 480,
-          viewx: 1472,
-          viewy: 255,
-        })
-      );
-    }
-
-    stage.insert(
-      new Q.ShadowLink({
-        x: 2060,
-        y: 300,
-        vfactor: 3,
-        view_range: 10,
-        damage: 0.5,
-        reloadSpeed: 1,
-        direction: 'down',
-        scale: 1.5,
-      })
-    );
-  });
-
-  // Menu
-
+  ////////// Main Menu //////////
   Q.scene('mainMenu', function(stage) {
     const container = stage.insert(
       new Q.UI.Container({
@@ -723,7 +586,8 @@ const game = function() {
     );
     startButton.on('click', function() {
       Q.clearStages();
-      Q.stageScene('Village');
+      Q.stageScene('Village',1);
+      Q.stageScene('HUD',2)
     });
     creditsButton = container.insert(
       new Q.UI.Button({
@@ -802,6 +666,7 @@ const game = function() {
 
     container.fit(20);
   });
+
   ////////// NPC TALKING /////////////
   Q.scene('npcTalk', function(stage){
     var container = stage.insert(new Q.UI.Container({
@@ -820,14 +685,59 @@ const game = function() {
     });
     container.fit(Q.height/8);
   });
-  ////////// Load TMX level //////////
+  
+
+  ////////// Scenes //////////
   Q.scene('Village', function(stage) {
     Q.stageTMX('village_map.tmx', stage);
 
     stage.add('viewport').follow(stage.lists.Player[0]);
-    //centerOn(Q.width * 0.5, Q.height * 0.5);
-    stage.viewport.scale = 1;
   });
+
+  Q.scene('CastleOut', function(stage) {
+    Q.stageTMX('castle_outside_map.tmx', stage);
+
+    stage.add('viewport').follow(stage.lists.Player[0]);
+  });
+
+  Q.scene('Castle', function(stage) {
+    Q.stageTMX('castle_sheet_map.tmx', stage);
+
+    stage.add('viewport').follow(stage.lists.Player[0]);
+  });
+
+  Q.scene('HUD', function(stage) {
+    container = stage.insert(new Q.HealthHUD());
+
+    for (let i = 0; i < 3; i+=1) {
+      container.insert(
+        new Q.UI.Button({
+          x: -Q.width / 2 + i*20,
+          y: -Q.height / 2 - 10,
+          w: 20,
+          h: 20,
+          sprite: 'life',
+          sheet: 'life',
+          frame: 0,
+          scale: 0.75,
+        })
+      );
+    }
+  });
+
+  ////////// HUD //////////
+  Q.UI.Container.extend('HealthHUD', {
+    init: function(p) {
+      this._super({
+        x: Q.width / 2 + 10,
+        y: Q.height / 2 + 20,
+      });
+
+      Q.state.on('change.score', this, 'score');
+    },
+  });
+
+  
 
   Q.load(
     'purple_link.png, purple_link.json, darknut.png, darknut.json, \
@@ -842,10 +752,12 @@ const game = function() {
       Q.compileSheets('big_rupee.png', 'big_rupee.json');
       Q.compileSheets('life.png', 'life.json');
       Q.compileSheets('shadow_link.png', 'shadow_link.json');
-      Q.loadTMX('village_map.tmx', function() {
-        //Q.stageScene('Castle');
-        Q.stageScene('mainMenu');
-      });
+      Q.loadTMX('village_map.tmx, castle_sheet_map.tmx,\
+        castle_outside_map.tmx',
+        function() {
+          Q.stageScene('mainMenu');
+        }
+      );
     }
   );
 };
