@@ -93,7 +93,9 @@ const game = function() {
           !sprites[i].isA('Player') &&
           col.x ** 2 + col.y ** 2 < radius ** 2
         ) {
-          if (sprites[i].hit) sprites[i].hit(this.p.damage);
+          if(sprites[i].hit){
+            if (frontAttack(p.direction, p.x, p.y, sprites[i].p.x, sprites[i].p.y)) sprites[i].hit(this.p.damage);
+          }
         }
       }
     },
@@ -403,7 +405,8 @@ const game = function() {
     interact: function(){
       if(!this.p.talking){
         this.p.talking = true;
-        Q.stageScene("npcTalk", 2, {label: "Holaaaaaa!"});
+        Q.stageScene("npcTalk", 3, {label: "Holaaaaaa!"});
+        this.p.talking = false;
       }
     },
   });
@@ -670,9 +673,9 @@ const game = function() {
   ////////// NPC TALKING /////////////
   Q.scene('npcTalk', function(stage){
     var container = stage.insert(new Q.UI.Container({
-      x: Q.width/2, y: (Q.height-Q.height/8-50), fill: "rgba(0,0,0,0.5)", w: Q.width, h:Q.height/8, keyActionName: 'action'
+      x: Q.width/2, y: (Q.height-Q.height/8-50), fill: "rgba(0,0,0,0.5)", w: Q.width, h:Q.height/8,
     }));
-    //var button = container.insert(new Q.UI.Button({keyActionName: "action"}));
+    var button = container.insert(new Q.UI.Button({keyActionName: "action"}));
     var label = container.insert(new Q.UI.Text({
       //x:10, 
       //y: -10 - button.p.h, 
@@ -680,10 +683,12 @@ const game = function() {
       color: "white",
     }));
     
-    container.on("action",function(){
+    button.on("click",function(){
       Q.clearStage(3);
+      Q.stage(1).unpause();
     });
     container.fit(Q.height/8);
+    Q.stage(1).pause();
   });
   
 
@@ -761,3 +766,17 @@ const game = function() {
     }
   );
 };
+
+///////////// Aux functions //////////////////
+function frontAttack(direction, xAttacker, yAttacker, xReceiver, yReceiver){
+  switch(direction){
+    case "up":
+      return yAttacker > yReceiver
+    case "down":
+      return yAttacker < yReceiver
+    case "left":
+      return xAttacker > xReceiver
+    case "right":
+      return xAttacker < xReceiver
+  }
+}
