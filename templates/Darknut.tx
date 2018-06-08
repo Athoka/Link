@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Darknut" width="40" height="44">
+  <properties>
+   <property name="Class" value="Darknut"/>
+   <property name="attack_range" value="3"/>
+   <property name="damage" value="0"/>
+   <property name="direction" value="down"/>
+   <property name="reloadSpeed" value="1"/>
+   <property name="tile_size" value="16"/>
+   <property name="vFactor" value="3"/>
+   <property name="view_range" value="10"/>
+   <property name="health" value="3"/>
+  </properties>
+ </object>
+</template>

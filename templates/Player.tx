@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object width="36" height="35">
+  <properties>
+   <property name="Class" value="Player"/>
+   <property name="direction" value="up"/>
+   <property name="range" value="3"/>
+   <property name="stepDelay" value="0.2"/>
+   <property name="stepDistance" value="16"/>
+   <property name="tile_size" value="16"/>
+  </properties>
+ </object>
+</template>

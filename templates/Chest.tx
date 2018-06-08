@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template>
+ <object name="Chest" width="41" height="45">
+  <properties>
+   <property name="Class" value="BigChest"/>
+   <property name="reward" value="big_rupee"/>
+  </properties>
+ </object>
+</template>
