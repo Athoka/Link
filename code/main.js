@@ -517,29 +517,49 @@ const game = function() {
     },
   });
 
-  ////////// Activation Grid ///////////
-  /*
-  Q.Sprite.extend('casillaActivacion', {
+  ////////// Puzzle Grid ///////////
+  
+
+
+  Q.Sprite.extend('activationGrid', {
     init: function(p) {
       this._super(p, {
-        asset: 'inv_colored.png',
+        asset: 'puzzle.png',
         gravity: 0,
+        sensor: true,
         activated: false,
       });
-      this.on('hit.sprite', function(collision) {
-        if (!collision.obj.isA('Player')) return;
+      this.on('sensor', function(collision) {
+        if (!collision.isA('Player')) return;
         if (!this.p.activated) {
-          this.p.activated = true;
           console.log(Q.state.get('label'));
           Q.state.inc('label', 1);
           console.log(Q.state.get('label'));
           if (Q.state.get('label') >= 2) {
-            Q.stageScene('PuzzleDone', 2, { label: 'Puzzle resuelto!' });
+            let sprites = Q.stage(1).getSprites();
+            for(i in sprites){
+              if(sprites[i].isA('barrierPuzzle'))
+                sprites[i].eliminate();
+            }
+            //Q.stageScene('PuzzleDone', 4, { label: 'Puzzle resuelto!' });
           }
+          this.destroy();
         }
       });
     },
   });
+
+  Q.Sprite.extend('barrierPuzzle',{
+    init: function(p){
+      this._super(p,{
+        asset: 'inv.png',
+        gravity: 0,
+      });
+    },
+    eliminate: function(){
+      this.destroy();
+    },
+  })
 
   Q.scene('PuzzleDone', function(stage) {
     var container = stage.insert(
@@ -565,11 +585,11 @@ const game = function() {
       })
     );
     button.on('click', function() {
-      Q.clearStage(2);
+      Q.clearStage(4);
     });
     container.fit(20);
   });
-  */
+  
 
   ////////// Main Menu //////////
   Q.scene('mainMenu', function(stage) {
@@ -707,7 +727,7 @@ const game = function() {
 
   Q.scene('Castle', function(stage) {
     Q.stageTMX('castle_sheet_map.tmx', stage);
-
+    Q.state.set('label',0);
     stage.add('viewport').follow(stage.lists.Player[0]);
   });
 
@@ -749,7 +769,7 @@ const game = function() {
     big_chest.json, big_chest.png, big_rupee.json, big_rupee.png, \
     inv.png, inv_colored.png, life.png, life.json, mainTitle.png, \
     startButton.png, creditsButton.png, credits.png, \
-    shadow_link.png, shadow_link.json',
+    shadow_link.png, shadow_link.json, puzzle.png',
     function() {
       Q.compileSheets('purple_link.png', 'purple_link.json');
       Q.compileSheets('darknut.png', 'darknut.json');
