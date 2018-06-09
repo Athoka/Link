@@ -674,7 +674,7 @@ const game = function() {
     button.on('click', function() {
       Q.clearStages();
       Q.audio.stop();
-      Q.audio.play('Menu.ogg', { loop: true });
+      Q.audio.play('Menu.ogg');
       Q.stageScene('mainMenu');
     });
 
@@ -780,7 +780,7 @@ const game = function() {
         'village_map.tmx, castle_sheet_map.tmx,\
         castle_outside_map.tmx',
         function() {
-          Q.audio.play('Menu.ogg', { loop: true });
+          Q.audio.play('Menu.ogg');
           Q.stageScene('mainMenu');
         }
       );
