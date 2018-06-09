@@ -7233,7 +7233,7 @@
   <object id="20" name="Darknut" x="393" y="434" width="44" height="45">
    <properties>
     <property name="Class" value="Darknut"/>
-    <property name="damage" value="0"/>
+    <property name="damage" value="1"/>
     <property name="direction" value="down"/>
     <property name="health" value="3"/>
     <property name="tile_size" value="16"/>
@@ -7254,7 +7254,7 @@
   <object id="24" name="Darknut" x="54" y="575" width="44" height="45">
    <properties>
     <property name="Class" value="Darknut"/>
-    <property name="damage" value="0"/>
+    <property name="damage" value="1"/>
     <property name="direction" value="down"/>
     <property name="health" value="3"/>
     <property name="tile_size" value="16"/>
@@ -7263,9 +7263,10 @@
   <object id="25" name="Shadow Link" x="228" y="109" width="44" height="40">
    <properties>
     <property name="Class" value="ShadowLink"/>
-    <property name="damage" value="0"/>
+    <property name="damage" value="1"/>
     <property name="direction" value="down"/>
     <property name="health" value="5"/>
+    <property name="reloadSpeed" value="0.5"/>
     <property name="tile_size" value="16"/>
    </properties>
   </object>
