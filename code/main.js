@@ -62,7 +62,6 @@ const game = function() {
         this.play('attack_' + this.p.direction);
         this.p.attacking = false;
       } else if (this.p.stepping && this.p.health > 0) {
-        Q.audio.play('MC_Link_Run.ogg');
         this.play('walk_' + this.p.direction);
       } else if (this.p.health > 0) {
         this.play('stand_' + this.p.direction);
@@ -375,6 +374,7 @@ const game = function() {
 
     step: function(dt) {
       if (this.p.opening) {
+        Q.audio.play('MC_Chest_Open.ogg');
         this.play('open');
         this.p.opening = false;
       }
@@ -550,6 +550,7 @@ const game = function() {
       this.on('sensor', function(collision) {
         if (!collision.isA('Player')) return;
         if (!this.p.activated) {
+          Q.audio.play('MC_FloorSwitch.ogg');
           console.log(Q.state.get('label'));
           Q.state.inc('label', 1);
           console.log(Q.state.get('label'));
@@ -762,8 +763,9 @@ const game = function() {
     inv.png, inv_colored.png, life.png, life.json, mainTitle.png, \
     startButton.png, creditsButton.png, credits.png, shadow_link.png, \
     shadow_link.json, puzzle.png, MC_Enemy_Hit.ogg, MC_Heart.ogg, \
-    MC_Link_Hurt.ogg, MC_Link_Run.ogg, MC_Link_Shield_Deflect.ogg, \
-    MC_Link_Sword.ogg, MC_Rupee.ogg, MC_Secret.ogg',
+    MC_Link_Hurt.ogg, MC_Link_Shield_Deflect.ogg, MC_Link_Sword.ogg, \
+    MC_Rupee.ogg, MC_Secret.ogg, MC_FloorSwitch.ogg, MC_Chest_Open.ogg, \
+    Music.ogg',
     function() {
       Q.compileSheets('purple_link.png', 'purple_link.json');
       Q.compileSheets('darknut.png', 'darknut.json');
