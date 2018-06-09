@@ -88,7 +88,6 @@ const game = function() {
     },
 
     attack: function() {
-      //Q.audio.play('MC_Link_Sword.ogg');
       const p = this.p;
       const pos = { x: p.x, y: p.y };
       const radius = p.range * p.tile_size;
@@ -597,6 +596,7 @@ const game = function() {
     );
     startButton.on('click', function() {
       Q.clearStages();
+      Q.audio.play('Music.ogg', { loop: true });
       Q.stageScene('Village', 1);
       Q.stageScene('HUD', 2);
     });
@@ -672,6 +672,7 @@ const game = function() {
 
     button.on('click', function() {
       Q.clearStages();
+      Q.audio.stop();
       Q.stageScene('mainMenu');
     });
 
