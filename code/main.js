@@ -596,6 +596,7 @@ const game = function() {
     );
     startButton.on('click', function() {
       Q.clearStages();
+      Q.audio.stop();
       Q.audio.play('Music.ogg', { loop: true });
       Q.stageScene('Village', 1);
       Q.stageScene('HUD', 2);
@@ -673,6 +674,7 @@ const game = function() {
     button.on('click', function() {
       Q.clearStages();
       Q.audio.stop();
+      Q.audio.play('Menu.ogg', { loop: true });
       Q.stageScene('mainMenu');
     });
 
@@ -766,7 +768,7 @@ const game = function() {
     shadow_link.json, puzzle.png, MC_Enemy_Hit.ogg, MC_Heart.ogg, \
     MC_Link_Hurt.ogg, MC_Link_Shield_Deflect.ogg, MC_Link_Sword.ogg, \
     MC_Rupee.ogg, MC_Secret.ogg, MC_FloorSwitch.ogg, MC_Chest_Open.ogg, \
-    Music.ogg',
+    Music.ogg, Menu.ogg',
     function() {
       Q.compileSheets('purple_link.png', 'purple_link.json');
       Q.compileSheets('darknut.png', 'darknut.json');
@@ -778,6 +780,7 @@ const game = function() {
         'village_map.tmx, castle_sheet_map.tmx,\
         castle_outside_map.tmx',
         function() {
+          Q.audio.play('Menu.ogg', { loop: true });
           Q.stageScene('mainMenu');
         }
       );
