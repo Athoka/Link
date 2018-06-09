@@ -5,9 +5,11 @@ const game = function() {
     .setup({
       width: 512,
       height: 512,
+      audioSupported: ['ogg', 'mp3'],
     })
     .controls()
-    .touch());
+    .touch()
+    .enableSound());
 
   ////////// Player Sprite //////////
   Q.Sprite.extend('Player', {
@@ -56,9 +58,11 @@ const game = function() {
       this.hpHUD();
 
       if (this.p.attacking && this.p.health > 0) {
+        Q.audio.play('MC_Link_Sword.ogg');
         this.play('attack_' + this.p.direction);
         this.p.attacking = false;
       } else if (this.p.stepping && this.p.health > 0) {
+        Q.audio.play('MC_Link_Run.ogg');
         this.play('walk_' + this.p.direction);
       } else if (this.p.health > 0) {
         this.play('stand_' + this.p.direction);
@@ -69,8 +73,11 @@ const game = function() {
 
     hit: function(dmg, source) {
       const pos = { x: this.p.x, y: this.p.y };
-      if (facing(this.p.direction, pos, source)) return;
-
+      if (facing(this.p.direction, pos, source)) {
+        Q.audio.play('MC_Link_Shield_Deflect.ogg');
+        return;
+      }
+      Q.audio.play('MC_Link_Hurt.ogg');
       this.p.health -= dmg;
       this.hpHUD();
       if (this.p.health <= 0) {
@@ -82,6 +89,7 @@ const game = function() {
     },
 
     attack: function() {
+      //Q.audio.play('MC_Link_Sword.ogg');
       const p = this.p;
       const pos = { x: p.x, y: p.y };
       const radius = p.range * p.tile_size;
@@ -206,6 +214,7 @@ const game = function() {
     },
 
     hit: function(dmg) {
+      Q.audio.play('MC_Enemy_Hit.ogg');
       this.p.health -= dmg;
       if (this.p.health <= 0) {
         this.destroy();
@@ -300,6 +309,7 @@ const game = function() {
     },
 
     hit: function(dmg) {
+      Q.audio.play('MC_Enemy_Hit.ogg');
       this.p.health -= dmg;
       if (this.p.health <= 0) {
         this.destroy();
@@ -382,9 +392,11 @@ const game = function() {
         let item = '';
         switch (this.p.reward) {
           case 'big_rupee':
+            Q.audio.play('MC_Rupee.ogg');
             item = new Q.BigRupee({ x: this.p.x, y: this.p.y });
             break;
           case 'heart':
+            Q.audio.play('MC_Heart.ogg');
             obj.p.health = obj.p.max_health;
             item = new Q.Heart({ x: this.p.x, y: this.p.y });
             break;
@@ -542,11 +554,11 @@ const game = function() {
           Q.state.inc('label', 1);
           console.log(Q.state.get('label'));
           if (Q.state.get('label') >= 2) {
+            Q.audio.play('MC_Secret.ogg');
             let sprites = Q.stage(1).getSprites();
             for (i in sprites) {
               if (sprites[i].isA('barrierPuzzle')) sprites[i].eliminate();
             }
-            //Q.stageScene('PuzzleDone', 4, { label: 'Puzzle resuelto!' });
           }
           this.destroy();
         }
@@ -564,35 +576,6 @@ const game = function() {
     eliminate: function() {
       this.destroy();
     },
-  });
-
-  Q.scene('PuzzleDone', function(stage) {
-    var container = stage.insert(
-      new Q.UI.Container({
-        x: Q.width / 2,
-        y: Q.height / 2,
-        fill: 'rgba(0,0,0,0.5)',
-      })
-    );
-    var button = container.insert(
-      new Q.UI.Button({
-        x: 0,
-        y: 0,
-        fill: '#CCCCCC',
-        label: 'OC.',
-      })
-    );
-    var label = container.insert(
-      new Q.UI.Text({
-        x: 10,
-        y: -10 - button.p.h,
-        label: stage.options.label,
-      })
-    );
-    button.on('click', function() {
-      Q.clearStage(4);
-    });
-    container.fit(20);
   });
 
   ////////// Main Menu //////////
@@ -777,8 +760,10 @@ const game = function() {
     'purple_link.png, purple_link.json, darknut.png, darknut.json, \
     big_chest.json, big_chest.png, big_rupee.json, big_rupee.png, \
     inv.png, inv_colored.png, life.png, life.json, mainTitle.png, \
-    startButton.png, creditsButton.png, credits.png, \
-    shadow_link.png, shadow_link.json, puzzle.png',
+    startButton.png, creditsButton.png, credits.png, shadow_link.png, \
+    shadow_link.json, puzzle.png, MC_Enemy_Hit.ogg, MC_Heart.ogg, \
+    MC_Link_Hurt.ogg, MC_Link_Run.ogg, MC_Link_Shield_Deflect.ogg, \
+    MC_Link_Sword.ogg, MC_Rupee.ogg, MC_Secret.ogg',
     function() {
       Q.compileSheets('purple_link.png', 'purple_link.json');
       Q.compileSheets('darknut.png', 'darknut.json');
