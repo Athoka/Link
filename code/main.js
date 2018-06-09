@@ -54,7 +54,6 @@ const game = function() {
 
       // Refresh hp HUD
       this.hpHUD();
-      
 
       if (this.p.attacking && this.p.health > 0) {
         this.play('attack_' + this.p.direction);
@@ -68,11 +67,12 @@ const game = function() {
       }
     },
 
-    hit: function(dmg) { 
+    hit: function(dmg, source) {
+      const pos = { x: this.p.x, y: this.p.y };
+      if (facing(this.p.direction, pos, source)) return;
+
       this.p.health -= dmg;
-
       this.hpHUD();
-
       if (this.p.health <= 0) {
         this.destroy();
         Q.stageScene('endGame', 2, {
@@ -83,35 +83,41 @@ const game = function() {
 
     attack: function() {
       const p = this.p;
+      const pos = { x: p.x, y: p.y };
       const radius = p.range * p.tile_size;
       p.attacking = true;
       sprites = Q.stage(1).getSprites();
       for (i in sprites) {
         const other = sprites[i].p;
-        col = { x: p.x - other.x, y: p.y - other.y };
+        const col = { x: p.x - other.x, y: p.y - other.y };
+        const other_pos = { x: other.x, y: other.y };
         if (
           !sprites[i].isA('Player') &&
-          col.x ** 2 + col.y ** 2 < radius ** 2
+          col.x ** 2 + col.y ** 2 < radius ** 2 &&
+          sprites[i].hit &&
+          facing(p.direction, pos, other_pos)
         ) {
-          if(sprites[i].hit){
-            if (frontAttack(p.direction, p.x, p.y, sprites[i].p.x, sprites[i].p.y)) sprites[i].hit(this.p.damage);
-          }
+          sprites[i].hit(this.p.damage);
         }
       }
     },
 
     interact: function() {
       const p = this.p;
+      const pos = { x: p.x, y: p.y };
       const radius = p.range * p.tile_size;
       sprites = Q.stage(1).getSprites();
       for (i in sprites) {
         const other = sprites[i].p;
-        col = { x: p.x - other.x, y: p.y - other.y };
+        const col = { x: p.x - other.x, y: p.y - other.y };
+        const other_pos = { x: other.x, y: other.y };
         if (
           !sprites[i].isA('Player') &&
-          col.x ** 2 + col.y ** 2 < radius ** 2
+          col.x ** 2 + col.y ** 2 < radius ** 2 &&
+          sprites[i].interact &&
+          facing(p.direction, pos, other_pos)
         ) {
-          if (sprites[i].interact) sprites[i].interact(this);
+          sprites[i].interact(this);
         }
       }
     },
@@ -129,7 +135,7 @@ const game = function() {
       for (let i = Math.ceil(this.p.health); i < 3; i += 1) {
         hpui[i].p.frame = 2;
       }
-    }
+    },
   });
 
   Q.animations('purple_link', {
@@ -392,25 +398,24 @@ const game = function() {
     open: { frames: [1, 2, 3], rate: 1 / 5, loop: false },
   });
   ////////// NPCs  //////////
-  Q.Sprite.extend('npc1',{
-    init: function(p){
+  Q.Sprite.extend('npc1', {
+    init: function(p) {
       this._super(p, {
         sheet: 'shadow_link',
         sprite: 'shadow_link',
         frame: 0,
         gravity: 0,
         talking: false,
-      })
+      });
     },
-    interact: function(){
-      if(!this.p.talking){
+    interact: function() {
+      if (!this.p.talking) {
         this.p.talking = true;
-        Q.stageScene("npcTalk", 3, {label: "Holaaaaaa!"});
+        Q.stageScene('npcTalk', 3, { label: 'Holaaaaaa!' });
         this.p.talking = false;
       }
     },
   });
-
 
   ////////// Items //////////
   Q.Sprite.extend('BigRupee', {
@@ -483,7 +488,7 @@ const game = function() {
         Q.stageScene('HUD', 2);
         const sprites = Q.stage(1).getSprites();
         let player = '';
-        let dest = {x: 0, y: 0};
+        let dest = { x: 0, y: 0 };
         for (s in sprites) {
           obj = sprites[s];
           if (obj.isA('Player')) {
@@ -498,7 +503,10 @@ const game = function() {
                 if (source === 'Village' && obj.p.direction === 'backward') {
                   dest.x = obj.p.x;
                   dest.y = obj.p.y - 20;
-                } else if (source === 'Castle' && obj.p.direction === 'forward') {
+                } else if (
+                  source === 'Castle' &&
+                  obj.p.direction === 'forward'
+                ) {
                   dest.x = obj.p.x;
                   dest.y = obj.p.y + 20;
                 }
@@ -518,8 +526,6 @@ const game = function() {
   });
 
   ////////// Puzzle Grid ///////////
-  
-
 
   Q.Sprite.extend('activationGrid', {
     init: function(p) {
@@ -537,9 +543,8 @@ const game = function() {
           console.log(Q.state.get('label'));
           if (Q.state.get('label') >= 2) {
             let sprites = Q.stage(1).getSprites();
-            for(i in sprites){
-              if(sprites[i].isA('barrierPuzzle'))
-                sprites[i].eliminate();
+            for (i in sprites) {
+              if (sprites[i].isA('barrierPuzzle')) sprites[i].eliminate();
             }
             //Q.stageScene('PuzzleDone', 4, { label: 'Puzzle resuelto!' });
           }
@@ -549,17 +554,17 @@ const game = function() {
     },
   });
 
-  Q.Sprite.extend('barrierPuzzle',{
-    init: function(p){
-      this._super(p,{
+  Q.Sprite.extend('barrierPuzzle', {
+    init: function(p) {
+      this._super(p, {
         asset: 'inv.png',
         gravity: 0,
       });
     },
-    eliminate: function(){
+    eliminate: function() {
       this.destroy();
     },
-  })
+  });
 
   Q.scene('PuzzleDone', function(stage) {
     var container = stage.insert(
@@ -589,7 +594,6 @@ const game = function() {
     });
     container.fit(20);
   });
-  
 
   ////////// Main Menu //////////
   Q.scene('mainMenu', function(stage) {
@@ -609,8 +613,8 @@ const game = function() {
     );
     startButton.on('click', function() {
       Q.clearStages();
-      Q.stageScene('Village',1);
-      Q.stageScene('HUD',2)
+      Q.stageScene('Village', 1);
+      Q.stageScene('HUD', 2);
     });
     creditsButton = container.insert(
       new Q.UI.Button({
@@ -691,26 +695,33 @@ const game = function() {
   });
 
   ////////// NPC TALKING /////////////
-  Q.scene('npcTalk', function(stage){
-    var container = stage.insert(new Q.UI.Container({
-      x: Q.width/2, y: (Q.height-Q.height/8-50), fill: "rgba(0,0,0,0.5)", w: Q.width, h:Q.height/8,
-    }));
-    var button = container.insert(new Q.UI.Button({keyActionName: "action"}));
-    var label = container.insert(new Q.UI.Text({
-      //x:10, 
-      //y: -10 - button.p.h, 
-      label: stage.options.label,
-      color: "white",
-    }));
-    
-    button.on("click",function(){
+  Q.scene('npcTalk', function(stage) {
+    var container = stage.insert(
+      new Q.UI.Container({
+        x: Q.width / 2,
+        y: Q.height - Q.height / 8 - 50,
+        fill: 'rgba(0,0,0,0.5)',
+        w: Q.width,
+        h: Q.height / 8,
+      })
+    );
+    var button = container.insert(new Q.UI.Button({ keyActionName: 'action' }));
+    var label = container.insert(
+      new Q.UI.Text({
+        //x:10,
+        //y: -10 - button.p.h,
+        label: stage.options.label,
+        color: 'white',
+      })
+    );
+
+    button.on('click', function() {
       Q.clearStage(3);
       Q.stage(1).unpause();
     });
-    container.fit(Q.height/8);
+    container.fit(Q.height / 8);
     Q.stage(1).pause();
   });
-  
 
   ////////// Scenes //////////
   Q.scene('Village', function(stage) {
@@ -727,17 +738,17 @@ const game = function() {
 
   Q.scene('Castle', function(stage) {
     Q.stageTMX('castle_sheet_map.tmx', stage);
-    Q.state.set('label',0);
+    Q.state.set('label', 0);
     stage.add('viewport').follow(stage.lists.Player[0]);
   });
 
   Q.scene('HUD', function(stage) {
     container = stage.insert(new Q.HealthHUD());
 
-    for (let i = 0; i < 3; i+=1) {
+    for (let i = 0; i < 3; i += 1) {
       container.insert(
         new Q.UI.Button({
-          x: -Q.width / 2 + i*20,
+          x: -Q.width / 2 + i * 20,
           y: -Q.height / 2 - 10,
           w: 20,
           h: 20,
@@ -762,8 +773,6 @@ const game = function() {
     },
   });
 
-  
-
   Q.load(
     'purple_link.png, purple_link.json, darknut.png, darknut.json, \
     big_chest.json, big_chest.png, big_rupee.json, big_rupee.png, \
@@ -777,7 +786,8 @@ const game = function() {
       Q.compileSheets('big_rupee.png', 'big_rupee.json');
       Q.compileSheets('life.png', 'life.json');
       Q.compileSheets('shadow_link.png', 'shadow_link.json');
-      Q.loadTMX('village_map.tmx, castle_sheet_map.tmx,\
+      Q.loadTMX(
+        'village_map.tmx, castle_sheet_map.tmx,\
         castle_outside_map.tmx',
         function() {
           Q.stageScene('mainMenu');
@@ -788,15 +798,15 @@ const game = function() {
 };
 
 ///////////// Aux functions //////////////////
-function frontAttack(direction, xAttacker, yAttacker, xReceiver, yReceiver){
-  switch(direction){
-    case "up":
-      return yAttacker > yReceiver
-    case "down":
-      return yAttacker < yReceiver
-    case "left":
-      return xAttacker > xReceiver
-    case "right":
-      return xAttacker < xReceiver
+function facing(direction, source, target) {
+  switch (direction) {
+    case 'up':
+      return source.y > target.y && Math.abs(source.x - target.x) < 10;
+    case 'down':
+      return source.y < target.y && Math.abs(source.x - target.x) < 10;
+    case 'left':
+      return source.x > target.x && Math.abs(source.y - target.y) < 10;
+    case 'right':
+      return source.x < target.x && Math.abs(source.y - target.y) < 10;
   }
 }
