@@ -6,7 +6,7 @@
 
 ## Objetivo del juego
 
-- El objetivo principal del juego es que Link recorra una mazmorra derrotando a enemigos hasta llegar al enfrentamiento contra el jefe final. Una vez se derrote a este enemigo, el juego termina en victoria.
+- El objetivo principal del juego es que Link recorra el castillo derrotando a enemigos hasta llegar al enfrentamiento contra el jefe final. Una vez se derrote a este enemigo, el juego termina en victoria.
 - Link puede recibir un número de impactos limitados antes de que termine el juego y, si este límite se supera, el juego termina en derrota.
 
 ## Mecánicas principales
@@ -19,13 +19,14 @@
 - Interfaz: Indicador de salud, pantalla de inicio, créditos, etc.
 - Tracking: Los enemigos son capaces de seguir a Link por el mapa para atacarle.
 - Puzzle: La mazmorra contiene una prueba que hay que superar para avanzar.
-- Interacción con el escenario: Link puede interactuar con algunos objetos del escenario para obtener información.
+- Interacción con el escenario: Link puede interactuar con algunos objetos y personajes del escenario para obtener información.
 
 ## Personajes
 
 - Link: Personaje principal controlado por el jugador. Puede moverse en todas direcciones y atacar hacia arriba, hacia abajo y hacia ambos lados.
 - Darknut: Enemigo. Persigue al jugador por el mapa cuando entra dentro de un radio de alcance y ataca cuando está lo suficientemente cerca.
 - Dark Link: Jefe final. Similar a Link en apariencia y a Darknut en comportamiento, pero más rápido y más resistente.
+- Princesa Zelda: Personaje que aparece al principio de la aventura para informarnos de nuestra misión. 
 
 ## Implementación
 
@@ -46,24 +47,26 @@
 
 - Se han implementado barreras invisibles para que el jugador no pueda pasar más allá de los límites del mapa utilizando el sistema de colisiones de Quintus.
 
-- Las casillas de activación sirven para resolver un puzzle en la mazmorra. Si se tocan, se muestra un mensaje al jugador para que sepa que ha completado el puzzle.
+- En el castillo existe un puzzle en el que hay que activar dos interruptores para poder avanzar a la siguiente sala. Dichos interruptores cambian de color cuando han sido presionados. Una vez que el puzzle se resuelve, se indica mediante un sonido que se puede avanzar a la siguiente sala.  
 
-- El escenario se ha construido utilizando Tiled con un tileset obtenido de internet (fuente al final del documento)
-- El mapa consta de varias habitaciones interconectadas. Se cargan todas simultáneamente y, al llegar a una de las salidas de una habitación, se traslada a Link a la siguiente.
-- Los escenarios contienen enemigos, cofres, puzzles, etc.
+- El escenario se ha construido utilizando Tiled con varios tileset obtenido de internet (fuente al final del documento)
+- El mapa consta de varios escenarios: un pueblo, los exteriores del castillo y el interior del castillo. Cada escenario está en una escena diferente y se cambia de una a otra al llegar a las entradas y salidas del mismo.
+
+- Los escenarios contienen enemigos, cofres, puzzles y personajes amigables.
 
 ## Reparto de tareas
 
 - David Antuña
-  - Programación general, creación de aiTrack, arreglo de bugs.
+  - Programación general, creación de aiTrack, arreglo de bugs, programación del hud.
 - Jaime Bas
   - Documento de alcance, arreglo de sprites, diseño e implementación de mapas y menús, memoria.
 - Irene González
-  - Documento de alcance, diseño general, programación general, arreglo de bugs.
+  - Documento de alcance, diseño general, programación general, arreglo de bugs, diseño de mapas.
 - José Luis Moreno
   - Arreglo de sprites, programación general, interfaz, diseño de puzzles.
 
 ## Fuentes y referencias
 
 - Personajes: Todos los sprites utilizados son propiedad de Nintendo. Spritesheets obtenidas de Sprite Database.
-- Tileset: Pokémon/Zelda Style tileset (por Gassassin en OpenGameArt.org, @Gazzazin en Twitter).
+- Tileset: Todos los mapas son propiedad de Nintendo. Obtenidos de Spriteresource.
+- Música: Toda la música y sonidos utilizados son propiedad de Nintendo. Obtenidos de http://noproblo.dayjo.org/ZeldaSounds/
