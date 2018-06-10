@@ -412,8 +412,8 @@ const game = function() {
   Q.Sprite.extend('npc1', {
     init: function(p) {
       this._super(p, {
-        sheet: 'shadow_link',
-        sprite: 'shadow_link',
+        sheet: 'zelda',
+        sprite: 'zelda',
         frame: 0,
         gravity: 0,
         talking: false,
@@ -422,7 +422,7 @@ const game = function() {
     interact: function() {
       if (!this.p.talking) {
         this.p.talking = true;
-        Q.stageScene('npcTalk', 3, { label: 'Holaaaaaa!' });
+        Q.stageScene('npcTalk', 3, { label: "There's an intruder in the castle. \n Help us, Link!" });
         this.p.talking = false;
       }
     },
@@ -761,7 +761,7 @@ const game = function() {
   });
 
   Q.load(
-    'purple_link.png, purple_link.json, darknut.png, darknut.json, \
+    'purple_link.png, purple_link.json, darknut.png, darknut.json, zelda.png, zelda.json, \
     big_chest.json, big_chest.png, big_rupee.json, big_rupee.png, \
     inv.png, inv_colored.png, life.png, life.json, mainTitle.png, \
     startButton.png, creditsButton.png, credits.png, shadow_link.png, \
@@ -776,6 +776,7 @@ const game = function() {
       Q.compileSheets('big_rupee.png', 'big_rupee.json');
       Q.compileSheets('life.png', 'life.json');
       Q.compileSheets('shadow_link.png', 'shadow_link.json');
+      Q.compileSheets('zelda.png', 'zelda.json');
       Q.loadTMX(
         'village_map.tmx, castle_sheet_map.tmx,\
         castle_outside_map.tmx',
