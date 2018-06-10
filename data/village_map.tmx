@@ -36,6 +36,7 @@
  <layer name="background" width="64" height="64" locked="1">
   <properties>
    <property name="collision" value="false"/>
+   <property name="type" value="0"/>
   </properties>
   <data>
    <tile/>
@@ -8289,6 +8290,7 @@
  <layer name="Front" width="64" height="64" locked="1">
   <properties>
    <property name="collision" value="false"/>
+   <property name="type" value="0"/>
   </properties>
   <data>
    <tile/>
